@@ -37,7 +37,7 @@ alignment-baseline:
 </style>
 <head>
   <!-- Bootstrap core CSS -->
-  <link href="bootstrap.min.css" rel="stylesheet">
+  <link href="src/bootstrap.min.css" rel="stylesheet">
   <link rel="icon"
         type="image/png"
         href="favicon.ico">
@@ -143,7 +143,7 @@ var svg = d3.select("body").append("svg")
           .attr("height", height)
           .attr("left", 20);
 
-d3.json("/network.json", function(error, graph) {
+d3.json("data/network.json", function(error, graph) {
     force
     .nodes(graph.nodes)
     .links(graph.links)
