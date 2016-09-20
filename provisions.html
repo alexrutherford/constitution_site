@@ -264,7 +264,7 @@
           //      $('#dropdown').append('<option value=' + key + '>' + value + '</option>');
           //  });
 
-            d3.tsv("total_.csv", function(error, data) {
+            d3.tsv("data/total_.csv", function(error, data) {
                 if (error) throw error;
 
                 var temp=data.map(function(v, i) {
