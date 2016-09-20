@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<style> /* set the CSS */
+
+body { font: 12px Arial;}
+body {
+  background-image: url(IMG_0312.JPG);
+  background-position: center top;
+  background-size: 100%;
+  background-color:black auto;
+	bgproperties="fixed";
+background-attachment: fixed;
+
+}
+
+path {
+    stroke: grey;
+    stroke-width: 3;
+    fill: none;
+}
+
+.axis path,
+.axis line,
+.axis tick,
+.axis domain {
+    fill: none;
+    stroke: black;
+    stroke-width: 3;
+    shape-rendering: crispEdges;
+}
+
+.focus text {
+    font-family: sans-serif,helvetica;
+    font-size:30px;
+    stroke:blue;
+}
+
+.axis text {
+    font-family: sans-serif,helvetica;
+    font-size: 30px;
+}
+
+</style>
+<head>
+  <!-- Bootstrap core CSS -->
+  <link href="bootstrap.min.css" rel="stylesheet">
+  <link rel="icon"
+        type="image/png"
+        href="favicon.ico">
+        <script src='https://code.jquery.com/jquery-2.1.4.js'></script>
+
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
+
+
+<script>
+$(function () {
+    $('#example').popover();
+});
+</script>
+
+</head>
+<body>
+
+  <div class="container">
+
+    <!-- Static navbar -->
+    <nav class="navbar navbar-default">
+      <div class="container-fluid">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" >Constitutionology</a>
+        </div>
+        <div id="navbar" class="navbar-collapse collapse">
+          <ul class="nav navbar-nav">
+            <li ><a href="index">Home</a></li>
+            <li><a href="about">About</a></li>
+            <li><a href="network">Network</a></li>
+            <li ><a href="timeline">Timeline</a></li>
+            <li><a href="provisions">Provisions</a></li>
+            <li><a href="tree">Tree</a></li>
+            <li><a href="data">Data</a></li>
+            <li class="active"><a href="faq">FAQ</a></li>
+          </ul>
+        </div><!--/.nav-collapse -->
+      </div><!--/.container-fluid -->
+    </nav>
+    <div class="jumbotron">
+
+      <div class="list-group">
+          <h2 class="list-group-item-heading">What is Constitutionology?</h4>
+          <p class="list-group-item-text">Constitutionology is a neologism for the
+            application of exploratory data analysis to national constitutions.
+            Techniques such as information retrieval and natural language processing
+            allow the extraction of structure and insight from large collections of text
+            data.
+          </p>
+
+          <h2 class="list-group-item-heading">Why is it important?</h4>
+          <p class="list-group-item-text">Constitutions are an alternate lens through
+            which to view history. The most important events of the last 200 years are
+            reflected in the record of constitutional amendments. These include WWII
+            and the collpase of the Soviet Union. The constitutions of former Empires
+            still resemble one another.
+            <br><br>
+            We can also understand historical trends in
+            constitutional amendments that are related to specific laws.
+          </p>
+
+          <h2 class="list-group-item-heading">Where is the data from?</h4>
+          <p class="list-group-item-text">Data is available from
+          </p>
+
+      </div>
+
+    </div>
+        Powered by Apache, Twitter Bootstrap and <a href='https://twitter.github.io/typeahead.js/examples/'>Typeahead</a> and <a href='https://github.com/twitter/typeahead.js/blob/master/doc/jquery_typeahead.md#class-names'>this</a>
+
+</div>
+
+</body>

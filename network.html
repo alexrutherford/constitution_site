@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+              <link href='http://fonts.googleapis.com/css?family=Oswald:400,700,300' rel='stylesheet' type='text/css'>
+                         <style>
+
+.node {
+stroke:
+    none;
+    stroke-width: 1px;
+fill:
+#00aeef;
+}
+
+.link {
+stroke:
+#5d6263;
+stroke-opacity:
+    .08;
+}
+
+.label {
+fill:
+#000000;
+font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial;
+cursor:
+    default;
+stroke:
+
+#000000;
+    stroke-width: 1.0;
+    font-weight: 300;
+    font-size:1.8em;
+text-anchor:
+    middle;
+alignment-baseline:
+    middle;
+    stroke:#000000
+}
+
+</style>
+<head>
+  <!-- Bootstrap core CSS -->
+  <link href="bootstrap.min.css" rel="stylesheet">
+  <link rel="icon"
+        type="image/png"
+        href="favicon.ico">
+        <script src='https://code.jquery.com/jquery-2.1.4.js'></script>
+
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
+
+</head>
+
+<body>
+  <script>
+  $(function () {
+      $('#example').popover({container:"body",viewport:'body'})
+  });
+  </script>
+
+  <div class="container">
+
+    <!-- Static navbar -->
+    <nav class="navbar navbar-default">
+      <div class="container-fluid">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" >Constitutionology</a>
+        </div>
+        <div id="navbar" class="navbar-collapse collapse">
+          <ul class="nav navbar-nav">
+            <li ><a href="index">Home</a></li>
+            <li><a href="about">About</a></li>
+            <li class="active"><a href="network">Network</a></li>
+            <li ><a href="timeline">Timeline</a></li>
+            <li><a href="provisions">Provisions</a></li>
+            <li ><a href="tree">Tree</a></li>
+            <li><a href="data">Data</a></li>
+            <li><a href="faq">FAQ</a></li>
+
+          </ul>
+        </div><!--/.nav-collapse -->
+      </div><!--/.container-fluid -->
+    </nav>
+
+    <div id="the-basicsb" class="form-group col-md-1" style="color:black">
+    <a tabindex="0" class="btn btn-lg btn-info" role="button" id="example"
+    data-toggle="popover" data-placement="right" data-trigger="focus"
+    data-html="true"
+    data-content="
+    This graphic displays a network representation of the present day constitutions of 194 countries.
+    Each circle (or 'node') represents the constitution of one country. Constitutions are linked to one
+    another based on the similarity in the language used in that text using Natual Language Processing techniques.
+    The nodes are coloured by finding clusters of well connected nodes; these clusters represent groups of countries which
+    all have similar language in theor constitutions. We can see four clusters; France and former French colonies,
+    Spain and Portugal along with their former colonies, former members of the Soviet Union and the United Kingdom and
+    former members of the British Empire.
+    ">
+    ?</a>
+</div>
+
+
+<script src="http://d3js.org/d3.v3.min.js"></script>
+            <script>
+
+            var margin = {top: 20, right: 80, bottom: 60, left: 60}
+
+            var w = window,
+                    d = document,
+                    e = d.documentElement,
+                    g = d.getElementsByTagName('body')[0],
+                    width = w.innerWidth || e.clientWidth || g.clientWidth,
+                    height = w.innerHeight|| e.clientHeight|| g.clientHeight;
+
+                    width = width - margin.left - margin.right,
+                    height = height - margin.top - margin.bottom;
+
+
+//            var width = 2000,
+//                height = 1200;
+
+//                var width = 2100,
+//                height = 1300;
+                // Goes with charge=-700, linkDistance=350
+
+
+//var color = d3.scale.category10();
+var color = ['#fbb4ae','#b3cde3','#ccebc5','#decbe4'];
+var color = ['#6A89BA','#6FAF7D','#CB6A72','#9185B7']
+//var color = d3.scale.ordinal()
+//    .domain([0,1,2,3])
+//    .range(colorbrewer.RdBu[4]);
+
+
+var force = d3.layout.force()
+            .charge(-300)
+            .linkDistance(150)
+            .size([width, height]);
+
+var svg = d3.select("body").append("svg")
+          .attr("width", width)
+          .attr("height", height)
+          .attr("left", 20);
+
+d3.json("/network.json", function(error, graph) {
+    force
+    .nodes(graph.nodes)
+    .links(graph.links)
+    .start();
+
+    var link = svg.selectAll(".link")
+               .data(graph.links)
+               .enter().append("line")
+               .attr("class", "link")
+    .style("stroke-width", function(d) {
+        return 2*d.weight;
+    });
+
+    // Create the groups under svg
+    var gnodes = svg.selectAll('g.gnode')
+                 .data(graph.nodes)
+                 .enter()
+                 .append('g')
+                 .classed('gnode', true)
+                 .on("mouseover", mouseover)
+                 .on("mouseout", mouseout)
+                 .call(force.drag);
+
+    var node = gnodes.append("circle")
+               .attr("class", "node")
+               .attr("r", function(d) {return 9;})
+//               .attr("r", 1)
+               .style("fill", function(d) { return color[d.type]; })
+               ;
+
+    // Append the labels to each group
+    var labels = gnodes.append("text")
+    .text(function(d) {
+        if(d.degree>0.0){return d.id}
+        else
+        {return ''};
+    })
+    .attr("class", "label");
+
+
+//    .style("fill", function(d) { return color[d.type]; });
+
+    // node.append("title")
+    // .text(function(d) { return d.id; });
+
+    force.on("tick", function() {
+        link.attr("x1", function(d) {
+            return d.source.x;
+        })
+        .attr("y1", function(d) {
+            return d.source.y;
+        })
+        .attr("x2", function(d) {
+            return d.target.x;
+        })
+        .attr("y2", function(d) {
+            return d.target.y;
+        });
+
+        // Translate the groups
+        gnodes.attr("transform", function(d) {
+            return 'translate(' + [d.x, d.y] + ')';
+        });
+
+        gnodes.attr("cx", function(d) {
+            return d.x;
+        })
+        .attr("cy", function(d) {
+            return d.y;
+        });
+    });
+
+
+});
+
+function mouseover() {
+    d3.select(this).select("circle").transition()
+    .duration(350)
+    .attr("r", 30);
+
+    console.log(d3.select(this)[0][0]['textContent']);
+}
+
+function mouseout() {
+    d3.select(this).select("circle").transition()
+    .duration(350)
+    .attr("r", function(d) {return 9;});
+}
+
+</script>

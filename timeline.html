@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<style> /* set the CSS */
+
+body { font: 12px Arial;}
+
+div{
+  color:#006699;
+}
+
+path {
+    stroke: grey;
+    stroke-width: 3;
+    fill: none;
+}
+
+.axis path,
+.axis line,
+.axis tick,
+.axis domain {
+    fill: none;
+    stroke: black;
+    stroke-width: 3;
+    shape-rendering: crispEdges;
+}
+
+.focus text {
+    font-family: sans-serif,helvetica;
+    font-size:30px;
+    stroke:blue;
+}
+
+.axis text {
+    font-family: sans-serif,helvetica;
+    font-size: 30px;
+}
+
+</style>
+<head>
+  <!-- Bootstrap core CSS -->
+  <link href="bootstrap.min.css" rel="stylesheet">
+  <link rel="icon"
+        type="image/png"
+        href="favicon.ico">
+        <script src='https://code.jquery.com/jquery-2.1.4.js'></script>
+
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
+
+</head>
+<body>
+  <script>
+  $(function () {
+      $('#example').popover({container:"body",viewport:'body'})
+  });
+  </script>
+
+  <div class="container">
+
+    <!-- Static navbar -->
+    <nav class="navbar navbar-default">
+      <div class="container-fluid">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" >Constitutionology</a>
+        </div>
+        <div id="navbar" class="navbar-collapse collapse">
+          <ul class="nav navbar-nav">
+            <li ><a href="index">Home</a></li>
+            <li><a href="about">About</a></li>
+            <li><a href="network">Network</a></li>
+            <li class="active"><a href="timeline">Timeline</a></li>
+            <li><a href="provisions">Provisions</a></li>
+            <li><a href="tree">Tree</a></li>
+            <li><a href="data">Data</a></li>
+            <li><a href="faq">FAQ</a></li>
+
+          </ul>
+        </div><!--/.nav-collapse -->
+      </div><!--/.container-fluid -->
+    </nav>
+  </div>
+
+    <div id="the-basicsb" class="form-group col-md-1" style="color:black">
+    <a tabindex="0" class="btn btn-lg btn-info" role="button" id="example"
+    data-toggle="popover" data-placement="right" data-trigger="focus"
+    data-html="true"
+    data-content="
+    This plot shows the number of countries existing with its own constitution in a given year.
+    This number changes as countries enter by declaring independence and transitioning from a colony
+    or monarchy to a constitutional monarchy of independent republic. The number will go down if a country
+    merges with another or if it suspends its constitution, for example under a military junta.
+    Hover over the timeline to see which countries leave and enter the dataset each year.
+    For example, 1872 sees the unification of several independent states into Germany and 1960-62 sees
+    the independence of many former African colonies.
+    <br><br>
+    The data comes from the <a href='http://comparativeconstitutionsproject.org/'>Comparative Constitutions Project</a>.
+    ">
+    ?</a>
+</div>
+</div'>
+
+<!-- load the d3.js library -->
+<script src="http://d3js.org/d3.v3.min.js"></script>
+
+<div id="year_span" style="position: absolute; top:100px; left:90px;color:006699;font-size:18px"></div>
+<div id="added_span" style="position: absolute; top:100px; left:200px; width:250px;color:006699;font-size:18px"></div>
+<div id="left_span" style="position: absolute; top:100px; left:500px; width:250px;font-size:18px"></div>
+
+<script>
+
+// Set the dimensions of the canvas / graph
+var margin = {top: 20, right: 80, bottom: 130, left: 60}
+
+var w = window,
+        d = document,
+        e = d.documentElement,
+        g = d.getElementsByTagName('body')[0],
+        width = w.innerWidth || e.clientWidth || g.clientWidth,
+        height = w.innerHeight|| e.clientHeight|| g.clientHeight;
+
+        width = width - margin.left - margin.right,
+        height = height - margin.top - margin.bottom;
+
+
+// Parse the date / time
+var parseDate = d3.time.format("%Y-%M-%d").parse,
+    formatDate = d3.time.format("%Y"),
+    bisectDate = d3.bisector(function(d) { return d.date; }).left;
+
+// Set the ranges
+var x = d3.time.scale().range([0, width]);
+var y = d3.scale.linear().range([height, 0]);
+
+// Define the axes
+var xAxis = d3.svg.axis().scale(x)
+    .orient("bottom").ticks(5);
+
+var yAxis = d3.svg.axis().scale(y)
+    .orient("left").ticks(5);
+
+// Define the line
+var valueline = d3.svg.line()
+    .x(function(d) { return x(d.date); })
+    .y(function(d) { return y(d.total); });
+
+// Adds the svg canvas
+var svg = d3.select("body")
+    .append("svg")
+        .attr("width", width + margin.left + margin.right)
+        .attr("height", height + margin.top + margin.bottom)
+    .append("g")
+        .attr("transform",
+              "translate(" + margin.left + "," + margin.top + ")");
+
+var lineSvg = svg.append("g");
+
+var focus = svg.append("g")
+    .style("display", "none");
+
+// Get the data
+d3.tsv("country_change_1900.csv", function(error, data) {
+    data.forEach(function(d) {
+        d.date = parseDate(d.date);
+        d.total = +d.total;
+        d.left=d.left.split(",")
+        d.nLeft=d.left.length
+        d.added=d.added.split(",")
+        d.nAdded=d.added.length
+
+//        console.log(d.date)
+//        console.log(d.added)
+//        console.log(d.added.split(","))
+
+    });
+
+
+    // Scale the range of the data
+    x.domain(d3.extent(data, function(d) { return d.date; }));
+    y.domain([0, d3.max(data, function(d) { return d.total; })]);
+
+    // Add the valueline path.
+    lineSvg.append("path")
+        .attr("class", "line")
+        .attr("d", valueline(data));
+
+    // Add the X Axis
+    svg.append("g")
+        .attr("class", "x axis")
+        .attr("transform", "translate(0," + height + ")")
+        .call(xAxis);
+
+    // Add the Y Axis
+    svg.append("g")
+        .attr("class", "y axis")
+        .call(yAxis);
+
+   // append the x line
+    focus.append("line")
+        .attr("class", "x")
+        .style("stroke-width", "10px")
+        .style("stroke", "black")
+        .style("stroke-width", "3px")
+        .style("stroke-dasharray", "3,1")
+        .style("opacity", 1.0)
+        .attr("y1", 0)
+        .attr("y2", height);
+
+    // append the y line
+//    focus.append("line")
+//        .attr("class", "y")
+//        .style("stroke", "black")
+//        .style("stroke-dasharray", "3,3")
+//        .style("opacity", 0.5)
+//        .attr("x1", width)
+//        .attr("x2", width);
+
+    // append the circle at the intersection
+    focus.append("circle")
+        .attr("class", "y")
+        .style("fill", "none")
+        .style("stroke", "black")
+        .attr("r", 8);
+
+    // place the value at the intersection
+    focus.append("text")
+        .attr("class", "y1")
+        .style("stroke", "white")
+        .style("stroke-width", "3.5px")
+        .style("opacity", 0.8)
+        .attr("dx", 8)
+        .attr("dy", "-.3em");
+    focus.append("text")
+        .attr("class", "y2")
+        .attr("dx", 8)
+        .attr("dy", "-.3em");
+
+    // place the date at the intersection
+    focus.append("text")
+        .attr("class", "y3")
+        .style("stroke", "white")
+        .style("stroke-width", "3.5px")
+        .style("opacity", 0.8)
+        .attr("dx", 8)
+        .attr("dy", "1em");
+    focus.append("text")
+        .attr("class", "y4")
+        .attr("dx", 8)
+        .attr("dy", "1em");
+
+    // append the rectangle to capture mouse
+    svg.append("rect")
+        .attr("width", width)
+        .attr("height", height)
+        .style("fill", "none")
+        .style("pointer-events", "all")
+        .on("mouseover", function() { focus.style("display", null); })
+        .on("mouseout", function() { focus.style("display", "none"); })
+        .on("mousemove", mousemove);
+
+    function mousemove() {
+		var x0 = x.invert(d3.mouse(this)[0]),
+		    i = bisectDate(data, x0, 1),
+		    d0 = data[i - 1],
+		    d1 = data[i],
+		    d = x0 - d0.date > d1.date - x0 ? d1 : d0;
+        $('#year_span').text('Year: '+formatDate(d.date));
+        $('#left_span').text('Left: \n'+d.left.join(', '));
+        $('#added_span').text('Added: \n'+d.added.join(", "));
+
+
+		focus.select("circle.y")
+		    .attr("transform",
+		          "translate(" + x(d.date) + "," +
+		                         y(d.total) + ")");
+
+		focus.select("text.y1")
+		    .attr("transform",
+		          "translate(" + x(d.date) + "," +
+		                         y(d.total) + ")")
+		    .text(d.total);
+
+		focus.select("text.y2")
+		    .attr("transform",
+		          "translate(" + x(d.date) + "," +
+		                         y(d.total) + ")")
+		    .text(d.total+" countries");
+
+		focus.select("text.y3")
+		    .attr("transform",
+		          "translate(" + x(d.date) + "," +
+		                         y(d.total) + ")")
+		    .text(formatDate(d.date));
+
+		focus.select("text.y4")
+		    .attr("transform",
+		          "translate(" + x(d.date) + "," +
+		                         y(d.total) + ")")
+		    .text(formatDate(d.date))
+        .style("font-size","20px");
+
+		focus.select(".x")
+		    .attr("transform",
+		          "translate(" + x(d.date) + "," +
+		                         y(d.total) + ")")
+		               .attr("y2", height - y(d.total));
+
+		focus.select(".y")
+		    .attr("transform",
+		          "translate(" + width * -1 + "," +
+		                         y(d.total) + ")")
+		               .attr("x2", width + width);
+	}
+
+});
+
+</script>
+</body>
