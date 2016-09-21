@@ -17,21 +17,21 @@ stroke-opacity:
 
 .label {
 fill:
-#000000;
-font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial;
+#3f403e;
+font-family: "Sans Serif";
 cursor:
     default;
 stroke:
 
-#000000;
-    stroke-width: 1.0;
+#3f403e;
+    stroke-width: 0.5;
     font-weight: 300;
-    font-size:1.8em;
+    font-size:1.5em;
 text-anchor:
-    middle;
+    below;
 alignment-baseline:
     middle;
-    stroke:#000000
+    stroke:#3f403e;
 }
 
 </style>
@@ -76,6 +76,7 @@ alignment-baseline:
             <li ><a href="timeline">Timeline</a></li>
             <li><a href="provisions">Provisions</a></li>
             <li ><a href="tree">Tree</a></li>
+            <li><a href="map">Map</a></li>
             <li><a href="data">Data</a></li>
             <li><a href="faq">FAQ</a></li>
 
@@ -127,21 +128,21 @@ alignment-baseline:
 
 //var color = d3.scale.category10();
 var color = ['#fbb4ae','#b3cde3','#ccebc5','#decbe4'];
-var color = ['#6A89BA','#6FAF7D','#CB6A72','#9185B7']
+//var color = ['#6A89BA','#6FAF7D','#CB6A72','#9185B7']
 //var color = d3.scale.ordinal()
 //    .domain([0,1,2,3])
 //    .range(colorbrewer.RdBu[4]);
 
 
 var force = d3.layout.force()
-            .charge(-300)
-            .linkDistance(150)
+            .charge(-200)
+            .linkDistance(100)
             .size([width, height]);
 
 var svg = d3.select("body").append("svg")
           .attr("width", width)
           .attr("height", height)
-          .attr("left", 20);
+          .attr("left", 0);
 
 d3.json("data/network.json", function(error, graph) {
     force
