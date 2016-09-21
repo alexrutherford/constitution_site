@@ -1,0 +1,31 @@
+
+<script src="http://d3js.org/d3.v3.min.js"></script>
+
+
+<html>
+    <head>
+        <meta charset="utf-8">
+        <link href="css/d3.geomap.css" rel="stylesheet">
+        <script src="vendor/d3.geomap.dependencies.min.js"></script>
+        <script src="js/d3.geomap.min.js"></script>
+    </head>
+    <body>
+        <div id="map"></div>
+    </body>
+</html>
+<script>
+
+var map = d3.geomap.choropleth()
+    .geofile('data/countries.json')
+    .colors(colorbrewer.Pastel2[5])
+    .column('constitution')
+    .domain([0, 5])
+    .legend(false)
+    .unitId('iso3');
+
+d3.csv('data/spinglass_clusters_iso3.csv', function(error, data) {
+    d3.select('#map')
+        .datum(data)
+        .call(map.draw, map);
+});
+</script>
