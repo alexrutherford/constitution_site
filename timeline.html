@@ -84,39 +84,33 @@ path {
         </div><!--/.nav-collapse -->
       </div><!--/.container-fluid -->
     </nav>
+
+    <div class="well">
+      <div class="media" style="color:black">
+    <h4>The number of countries with a constitution appearing in our dataset changes
+      over time. This plot shows how that number changes over time and which countries
+    enter and leave each year.</a>
+    </h4>
+    </div>
+    </div>
+
   </div>
 
-    <div id="the-basicsb" class="form-group col-md-1" style="color:black">
-    <a tabindex="0" class="btn btn-lg btn-info" role="button" id="example"
-    data-toggle="popover" data-placement="right" data-trigger="focus"
-    data-html="true"
-    data-content="
-    This plot shows the number of countries existing with its own constitution in a given year.
-    This number changes as countries enter by declaring independence and transitioning from a colony
-    or monarchy to a constitutional monarchy of independent republic. The number will go down if a country
-    merges with another or if it suspends its constitution, for example under a military junta.
-    Hover over the timeline to see which countries leave and enter the dataset each year.
-    For example, 1872 sees the unification of several independent states into Germany and 1960-62 sees
-    the independence of many former African colonies.
-    <br><br>
-    The data comes from the <a href='http://comparativeconstitutionsproject.org/'>Comparative Constitutions Project</a>.
-    ">
-    ?</a>
-</div>
+
 
 </div'>
 
 <!-- load the d3.js library -->
 <script src="https://d3js.org/d3.v3.min.js"></script>
 
-<div id="year_span" style="position: absolute; top:100px; left:90px;color:006699;font-size:18px"></div>
-<div id="added_span" style="position: absolute; top:100px; left:200px; width:250px;color:006699;font-size:18px"></div>
-<div id="left_span" style="position: absolute; top:100px; left:500px; width:250px;font-size:18px"></div>
+<div id="year_span" style="position: absolute; top:200px; left:120px;color:006699;font-size:17px"></div>
+<div id="added_span" style="position: absolute; top:200px; left:230px; width:250px;color:006699;font-size:17px"></div>
+<div id="left_span" style="position: absolute; top:200px; left:530px; width:250px;font-size:17px"></div>
 
 <script>
 
 // Set the dimensions of the canvas / graph
-var margin = {top: 20, right: 80, bottom: 130, left: 60}
+var margin = {top: 20, right: 80, bottom: 250, left: 60}
 
 var w = window,
         d = document,

@@ -89,29 +89,19 @@
         </nav>
 
 
-        <div id="the-basicsa" class="form-group col-md-12">
-          <div id="the-basicsb" class="form-group col-md-1">
-          <a tabindex="0" class="btn btn-lg btn-info" role="button" id="example"
-          data-toggle="popover" data-placement="right" data-trigger="focus"
-          data-html="true"
-          data-max-width="1000px"
-          data-content="
-          This plot shows the historical trend in adoption of provisions over time.
-          Each line shows the proportion of countries that exist in that year having a
-          provision in their constitution addressing a particular issue. <br><br>There are 266 provisions
-          related to questions such as <i>'Does the constitution provide for the right to protection
-          from unjustified restraint (habeas corpus)?</i>'.<br><br>
-
-          You can search for other provisions in the input box above.">
-          ?</a>
-        </div>
-          <div id="the-basics" class="form-group col-md-11">
+        <div class="well">
+          <div class="media">
+        <h4>Search for specific provisions e.g. "The right to safe working conditions" or "Equality of gender" to see how their adoption (proportion of countries)
+          changes over time</a>
+        </h4>
+      </div>
+    </div>
+          <div id="the-basics" >
           <input class="typeahead form-control" type="text" placeholder="Search for provisions related to something e.g. children, work, education">
         </div>
 
 
-
-          <div id="the-d3" class="form-group col-md-12"></div>
+          <div id="the-d3" ></div>
     <!-- Bootstrap, working on Chrome?
 <div class="dropdown" style="position: absolute; top:80px; left:90px;">
   <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1"
@@ -155,8 +145,6 @@
       };
     };
 
-
-
     var json = (function () {
         var json = null;
         $.ajax({
@@ -194,7 +182,7 @@
         var margin = {
             top: 20,
             right: 60,
-            bottom: 200,
+            bottom: 300,
             left: 120
         };
 
@@ -270,7 +258,6 @@
                 var temp=data.map(function(v, i) {
                     return +v.doubjep;})
 
-                console.log('GOT 4: '+temp)
 
                 var dates = data.map(function(v, i) {
                     return parseDate(v.date);
@@ -392,7 +379,7 @@
                     .attr("d", function(d) {
                         return line(d.values);
                     })
-                    .style("stroke", "#ddddd9").style("stroke-opacity", '0.75')
+                    .style("stroke", "#ddddd9").style("stroke-opacity", '0.25')
                     .on("onclick", mouseOverFunction)
                     .on("mouseout", mouseOutFunction);
 
