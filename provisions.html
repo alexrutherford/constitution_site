@@ -97,30 +97,20 @@
         </h4>
       </div>
     </div>
-          <div id="the-basics" >
-          <input class="typeahead form-control" type="text" placeholder="Search for provisions related to something e.g. children, work, education">
+
+
+        <div id="the-basics" >
+          <input id="myTypeAhead" class="typeahead form-control" type="text" placeholder="Search for provisions related to something e.g. children, work, education">
         </div>
-
-
-    <!-- Bootstrap, working on Chrome?
-<div class="dropdown" style="position: absolute; top:80px; left:90px;">
-  <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1"
-  data-toggle="dropdown" aria-haspopup="true" aria-expanded="true" onchange=function({console.log('SELECTED')})>
-    Provision
-    <span class="caret"></span>
-  </button>
-  <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
-    <li><a href="#">Action</a></li>
-    <li><a href="#">Another action</a></li>
-    <li><a href="#">Something else here</a></li>
-    <li><a href="#">Separated link</a></li>
-  </ul>
-</div>
--->
-
+        <br>
+<center>
+  <button class="btn btn-primary" id="randomButton" style="padding: 5px 10px;">I'm feeling lucky</button>
+  <center>
 
     <script src="src/typeahead.bundle.js"></script>
     <script type="text/javascript">
+
+
     var substringMatcher = function(strs) {
 
       return function findMatches(q, cb) {
@@ -292,6 +282,20 @@
 
                 };
 
+                var selectRandom=function()
+                {
+                  var chosen=values[Math.floor(Math.random() * keys.length)];
+                  console.log('Chose'+chosen);
+                  $("#myTypeAhead").typeahead('val',chosen);
+                  selectProvision(chosen);
+                }
+
+                $(document).ready(function(){
+                  $('#randomButton').click(function(){
+                     selectRandom();
+                  });
+                });
+
 
                 //$('#dropdown').change(selectProvision)
 
@@ -407,7 +411,13 @@
         });
 
 
+
     </script>
+
+    <script>
+
+    </script>
+
   </div>
   </div>
 </div>
