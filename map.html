@@ -29,7 +29,7 @@
                   <span class="icon-bar"></span>
                   <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" >Constitutionology</a>
+                <a class="navbar-brand" href="index">Constitutionology</a>
               </div>
               <div id="navbar" class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
@@ -47,37 +47,15 @@
               </div><!--/.nav-collapse -->
             </div><!--/.container-fluid -->
           </nav>
-
-
-        <div class="well">
-          <div class="media">
-        <h4>This is a network in which nodes are countries which are connected based
-          on the similarity of the texts of their constitutions. The network forms 4 distinct
-          clusters of countries corresponding to the Commonwealth, former Soviet Union, Iberian
-          and Francophone countries. Also see the <a href="network">
-            network view</a>
-        </h4>
+          <div class="well">
+            <div class="media">
+          <h4>This map shows countries grouped into clusters of countries with similar constitutions.
+            There are 4 distinct clusters of countries corresponding to the Commonwealth, former Soviet Union, Iberian
+            and Francophone countries. These network clusters can be seen in a <a href="network">
+              network view</a>
+          </h4>
+        </div>
       </div>
-    </div>
-
-</div>
-        <div id="map"></div>
-
+<iframe width="100%" height="520" frameborder="0" src="https://alexisadams.carto.com/viz/80452e08-801e-11e6-a89a-0e98b61680bf/embed_map" allowfullscreen webkitallowfullscreen mozallowfullscreen oallowfullscreen msallowfullscreen></iframe>
     </body>
 </html>
-<script>
-
-var map = d3.geomap.choropleth()
-    .geofile('topojson/world/countries.json')
-    .colors(colorbrewer.Pastel2[5])
-    .column('constitution')
-    .domain([0, 5])
-    .legend(false)
-    .unitId('iso3');
-
-d3.csv('data/spinglass_clusters_iso3.csv', function(error, data) {
-    d3.select('#map')
-        .datum(data)
-        .call(map.draw, map);
-});
-</script>
