@@ -55,7 +55,7 @@
 
       var margin = {
           top: 20,
-          right: 60,
+          right: 20,
           bottom: 300,
           left: 120
       };
@@ -106,20 +106,68 @@
             <!--/.container-fluid -->
         </nav>
 
+        <div class="well">
+          <div class="media">
+        <h4>Search for provisions e.g. "The right to safe working conditions" or "Equality of gender" to see
+          their position in the provision hierarchy</a>
+        </h4>
+      </div>
+    </div>
 
 
-    <!-- load the d3.js library -->
+        <div id="the-basics" >
+          <input id="myTypeAhead" class="typeahead form-control" type="text" placeholder="Search for provisions related to something e.g. children, work, education">
+        </div>
+        <br>
+<div style="text-align:right">
+  <button class="btn btn-primary" id="randomButton" style="padding: 5px 10px;">I'm feeling lucky</button>
+</div>
+
+    <script src="src/typeahead.bundle.js"></script>
+    <script type="text/javascript">
+
+
+    var substringMatcher = function(strs) {
+
+      return function findMatches(q, cb) {
+
+        var matches, substringRegex;
+
+        // an array that will be populated with substring matches
+        matches = [];
+
+        // regex used to determine if a string contains the substring `q`
+        substrRegex = new RegExp(q, 'i');
+
+        // iterate through the pool of strings and for any string that
+        // contains the substring `q`, add it to the `matches` array
+        $.each(strs, function(i, str) {
+          if (substrRegex.test(str)) {
+            matches.push(str);
+          }
+        });
+
+        cb(matches);
+      };
+    };
+
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.5/d3.min.js"></script>
+    <div class="col-sm-4">
+
     <script src="https://d3js.org/d3.v3.min.js"></script>
 
     <script>
+
+
 
     var xFunc = function(i) { return i * ((width+0.01)/data.length)};
 
     d3.csv('data/out_ranks_provisions_no_ties.txt', function(pos2name) {
 
-      console.log(pos2name);
+      //console.log(pos2name);
 
-      console.log(pos2name[0]);
+      // /console.log(pos2name[0]);
 
 
       revKeys=pos2name.map(function(d){return +d['n'];});
@@ -148,12 +196,85 @@
         return json;
     })();
 
+    document.onkeydown = checkKey;
+
+    function checkKey(e) {
+
+        e = e || window.event;
+
+        if (e.keyCode == '37') {
+           // left arrow
+           console.log('Left '+highlighted);
+           mouseout(circleEnter[0][highlighted],highlighted);
+           highlighted=highlighted-1;
+           mouseover(circleEnter[0][highlighted],highlighted)
+
+           $("#myTypeAhead").typeahead('val',json[data[highlighted].toUpperCase()]);
+        }
+        else if (e.keyCode == '39') {
+           // right arrow
+            console.log('Right '+highlighted);
+            mouseout(circleEnter[0][highlighted],highlighted);
+            highlighted=highlighted+1;
+            mouseover(circleEnter[0][highlighted],highlighted)
+
+            $("#myTypeAhead").typeahead('val',json[data[highlighted].toUpperCase()]);
+        }
+
+    }
+
+
+    highlighted=-1;
+
     keys=Object.keys(json)
     console.log(json['LEGISL'])
 
     keys=keys.map(function(d){return d.toLowerCase();})
     values=keys.map(function(d){return json[d.toUpperCase()];})
 
+    $('#the-basics .typeahead').typeahead({
+      hint: false,
+      highlight: true,
+      minLength: 1
+    },
+    {
+      name: 'values',
+      source: substringMatcher(values),
+      limit:15
+    });
+
+    $('.typeahead').bind('typeahead:select', function(ev, suggestion) {
+        console.log('NOW GOT'+suggestion)
+        selectProvision(suggestion);
+    });
+
+    var selectProvision = function(prov) {
+        console.log('GOT: '+prov)
+
+        i=values.indexOf(prov);
+
+        console.log('GOT 2: '+i)
+        console.log('Rank '+data.indexOf(keys[i]))
+        console.log('highlighted '+highlighted);
+
+        if(highlighted){console.log("Selected:mouseout");mouseout(circleEnter[0][highlighted],highlighted);}
+        highlighted=data.indexOf(keys[i]);
+        mouseover(circleEnter[0][highlighted],highlighted)
+      };
+
+      var selectRandom=function()
+      {
+        var chosen=values[Math.floor(Math.random() * keys.length)];
+        console.log('Chose'+chosen);
+        $("#myTypeAhead").typeahead('val',chosen);
+        selectProvision(chosen);
+      }
+
+      $(document).ready(function(){
+        $('#randomButton').click(function(){
+           selectRandom();
+        });
+      });
 
 
     var colorScale = d3.scale.linear().domain([0, keys.length]).range(['blue', 'red']);
@@ -175,7 +296,9 @@
 //        d3.select('path')
 //	       .attr('d',lineGenerator([[j,60],[j+(j-i)/2,60],[j,60]]));
 
-        var heightFunc = function(i,j){console.log(2.0*mid*(i-j)/values.length); return 2.0*mid*(i-j)/values.length;}
+        var heightFunc = function(i,j){
+          //console.log(2.0*mid*(i-j)/values.length);
+          return 2.0*mid*(i-j)/values.length;}
 
          var lineData=[[xFunc(i),mid],[xFunc(i)+((xFunc(j)-xFunc(i))/2),
            mid+heightFunc(i,j)],[xFunc(j),mid]];
@@ -202,10 +325,14 @@
 
 
             function mouseout(d,i) {
-                d3.select(this).transition()
+                console.log("mouse out "+i);
+
+                $("#myTypeAhead").typeahead('val','');
+
+                d3.select(circleEnter[0][i]).transition()
                 .duration(500)
                 .attr("r", 2);
-                console.log("mouse out")
+
 
                 d3.select("#id"+data[i]["name"]).remove();
 
@@ -232,26 +359,36 @@
 
                 function mouseover(d,i) {
 
-                    d3.select(this).transition()
+                    console.log("Mouse over "+i);
+
+                    if($("#myTypeAhead").val().length==0){
+                      $("#myTypeAhead").typeahead('val',json[data[i].toUpperCase()]);
+                  }
+
+                    highlighted=i;
+
+                    d3.select(circleEnter[0][i]).transition()
                     .duration(350)
                     .attr("r", 10);
-                    console.log("Mouse over")
+
                     console.log("Name: "+data[i]["name"]);
                     console.log("Data: "+data2[i][10])
 
                     drawArcs(i);
 
-                    desc=(i+1)+" of 234: ";
-                    desc=desc + json[data[i].toUpperCase()];
+                    desc=(i+1)+" of 234";
+                    //desc=desc + json[data[i].toUpperCase()];
 
                     svg.append("text").attr({
                       //x: i * ((width+0.01)/data.length),
                       //y: 40,
                       x:margin.left,
-                      y:40,
+                      y:10,
                       id: "id"+data[i]["name"],
-                      fill:colorScale(i)
+                      fill:"grey",
+
                     })
+                    .style({'font-size':"20px"})
                     .text(desc);
 
                 }
@@ -260,6 +397,8 @@
             var circleEnter = circle.enter().append("circle")
             .on("mouseover", mouseover)
             .on("mouseout", mouseout);
+
+            console.log(circleEnter[0][1]);
 
             //var labels = circleEnter.append("text");
 
