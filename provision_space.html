@@ -109,7 +109,8 @@
         <div class="well">
           <div class="media">
         <h4>Search for provisions e.g. "The right to safe working conditions" or "Equality of gender" to see
-          their position in the provision hierarchy</a>
+          their position in the provision hierarchy. Provisions to the left are generally adopted before
+          provisions on the right. The left and right keys move the focus.</a>
         </h4>
       </div>
     </div>
@@ -300,6 +301,7 @@
 
     var drawArcs = function(i)
     {
+      var delta=20;
 
       for(j=0;j<values.length;j++)
       {
@@ -308,21 +310,31 @@
 //        d3.select('path')
 //	       .attr('d',lineGenerator([[j,60],[j+(j-i)/2,60],[j,60]]));
 
+
         var heightFunc = function(i,j){
           //console.log(2.0*mid*(i-j)/values.length);
-          return 1.0*mid*(i-j)/values.length;}
+          var temp = 1.0*mid*(i-j)/values.length;
+           //if (i<j){temp=temp-delta;}
+           //else{temp=temp+delta;}
+
+          return temp;
+        }
+
+
 
          var lineData=[[xFunc(i),mid],[xFunc(i)+((xFunc(j)-xFunc(i))/2),
            mid+heightFunc(i,j)],[xFunc(j),mid]];
 
-         svg.append("path")
+         var x = svg.append("path")
         .attr("d", lineGenerator(lineData))
         .attr("stroke", colorScale(j))
-        .attr("stroke-width", parseFloat(data2[i][j])/20.)
+        .attr("stroke-width", parseFloat(data2[i][j])/30.)
         .attr("fill", "none")
         .attr("id", "id"+j);
 //        .duration(durationTime)
 //        .attr("stroke-width", 0.2);
+
+
       }
 
     }
@@ -367,7 +379,7 @@
                 .append("svg")
                     .attr("width", width + margin.left + margin.right)
                     .attr("height", height + margin.top + margin.bottom)
-                .append("g")
+                    .append("g")
                     .attr("transform",
                           "translate(" + margin.left + "," + margin.top + ")");
 
@@ -422,8 +434,6 @@
             //.on("mouseout", mouseout);
 
             console.log(circleEnter[0][1]);
-
-            //var labels = circleEnter.append("text");
 
             circleEnter.text(function(d,i){return data[i]["name"]});
 
