@@ -279,8 +279,23 @@
         temp=Math.floor(Math.random() * keys.length);
         var chosen=values[temp];
         console.log('Chose'+chosen);
+
         $("#myTypeAhead").typeahead('val',chosen);
         selectProvision(chosen);
+
+//         $.get("https://www.constituteproject.org/service/sectionstopicsearch?key=amend&cons_id=Afghanistan_2004&lang=en",
+//         function(data){
+//           alert("Data: " + data);
+//         })
+//         .done(function() {
+//     alert( "second success" );
+// });
+
+$.ajax({
+url: "https://www.constituteproject.org/service/sectionstopicsearch?key=amend&cons_id=Afghanistan_2004&lang=en",
+async:true
+});
+
       }
 
       $(document).ready(function(){
@@ -290,7 +305,7 @@
       });
 
 
-    var colorScale = d3.scale.linear().domain([0, keys.length]).range(['#4d4dff','#ff1a1a']);
+    var colorScale = d3.scale.linear().domain([0, keys.length]).range(['#ff1a1a','#4d4dff']);
 
     var mid=200;
 
