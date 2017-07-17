@@ -124,6 +124,7 @@
   <button class="btn btn-primary" id="randomButton" style="padding: 5px 10px;">I'm feeling lucky</button>
 </div>
 
+
     <script src="src/typeahead.bundle.js"></script>
     <script type="text/javascript">
 
@@ -164,14 +165,13 @@
 
     var xFunc = function(i) { return i * ((width+0.01)/data.length)};
 
+    d3.json('data/out.json',function(outData){
+
+      console.log("KEYS "+d3.keys(outData));
+
     d3.csv('data/out_ranks_provisions_no_ties.txt', function(pos2name) {
 
-      //console.log(pos2name);
-
-      // /console.log(pos2name[0]);
-
       revKeys=pos2name.map(function(d){return +d['n'];});
-      // revKeys[1] => label index at rank 1
 
     d3.tsv('data/provision_adjacency_index.txt', function(data2) {
       console.log(data2[0]);
@@ -268,6 +268,20 @@
         console.log('Highlighted is '+highlighted);
         //highlighted=data.indexOf(keys[i]);
         //console.log('highlighted '+highlighted);
+        //console.log(keys[data.indexOf(keys[i])]);
+        console.log(keys[i]);
+        console.log(d3.keys(outData));
+        console.log(outData[keys[i]]);
+
+        if(d3.keys(outData).indexOf(keys[i])>0)
+        {
+        var randExample=Math.floor(Math.random()*d3.keys(outData[keys[i]]).length);
+        console.log("Got:"+randExample);
+        console.log(d3.keys(outData[keys[i]])[randExample]);
+        console.log("Example: "+d3.values(outData[keys[i]])[randExample]);
+        }
+        else{console.log('Missing...')};
+
 
         if(highlighted){console.log("Selected:mouseout "+highlighted);mouseout(circleEnter[0][highlighted],highlighted);}
         highlighted=data.indexOf(keys[i]);
@@ -282,19 +296,6 @@
 
         $("#myTypeAhead").typeahead('val',chosen);
         selectProvision(chosen);
-
-//         $.get("https://www.constituteproject.org/service/sectionstopicsearch?key=amend&cons_id=Afghanistan_2004&lang=en",
-//         function(data){
-//           alert("Data: " + data);
-//         })
-//         .done(function() {
-//     alert( "second success" );
-// });
-
-$.ajax({
-url: "https://www.constituteproject.org/service/sectionstopicsearch?key=amend&cons_id=Afghanistan_2004&lang=en",
-async:true
-});
 
       }
 
@@ -335,10 +336,13 @@ async:true
           return temp;
         }
 
+        var yOffset=0;
 
+        if (j<i){yOffset=5}
+        else{yOffset=-5}
 
-         var lineData=[[xFunc(i),mid],[xFunc(i)+((xFunc(j)-xFunc(i))/2),
-           mid+heightFunc(i,j)],[xFunc(j),mid]];
+         var lineData=[[xFunc(i),mid+yOffset],[xFunc(i)+((xFunc(j)-xFunc(i))/2),
+           mid+heightFunc(i,j)+yOffset],[xFunc(j),mid+yOffset]];
 
          var x = svg.append("path")
         .attr("d", lineGenerator(lineData))
@@ -356,16 +360,6 @@ async:true
 
     var durationTime = 1000;
 
-    // var w = window,
-    //         d = document,
-    //         e = d.documentElement,
-    //         g = d.getElementsByTagName('body')[0],
-    //         width = w.innerWidth || e.clientWidth || g.clientWidth,
-    //         height = w.innerHeight|| e.clientHeight|| g.clientHeight;
-    //
-    //         width = width - margin.left - margin.right,
-    //         height = height - margin.top - margin.bottom;
-
 
             function mouseout(d,i) {
                 console.log("mouse out "+i);
@@ -374,8 +368,8 @@ async:true
 
                 d3.select(circleEnter[0][i]).transition()
                 .duration(durationTime)
-                .attr("r", 2);
-                //.attr('fill-opacity', 1.0);
+                .attr("r", 2)
+                .attr('fill-opacity', 1.0);
 
 
                 d3.select("#id"+data[i]["name"]).remove();
@@ -418,8 +412,8 @@ async:true
 
                     d3.select(circleEnter[0][i]).transition()
                     .duration(durationTime)
-                    .attr("r", 10);
-//                    .attr('fill-opacity', 0.0);;
+                    .attr("r", 10)
+                    .attr('fill-opacity', 0.5);
 
                     console.log("Name: "+data[i]["name"]);
                     console.log("Data: "+data2[i][10])
@@ -457,7 +451,7 @@ async:true
             circleEnter.attr("r", function(d) { return 2});
             circleEnter.attr("name",function(d,i){return data[i]["name"];});
             circleEnter.attr("fill", function(d,i){return colorScale(i)});
-
+      });
     });
   });
 });

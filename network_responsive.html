@@ -1,5 +1,20 @@
                          <style>
 
+                         .svg-container {
+                             display: inline-block;
+                             position: relative;
+                             width: 100%;
+                             padding-bottom: 100%; /* aspect ratio */
+                             vertical-align: top;
+                             overflow: hidden;
+                         }
+                         .svg-content-responsive {
+                             display: inline-block;
+                             position: absolute;
+                             top: 10px;
+                             left: 0;
+                         }
+
 .node {
 stroke:
     none;
@@ -44,7 +59,7 @@ alignment-baseline:
         <script src='https://code.jquery.com/jquery-2.1.4.js'></script>
 
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
-<title>Constitutionology - Network</title>
+
 </head>
 
 <body>
@@ -70,37 +85,41 @@ alignment-baseline:
         </div>
         <div id="navbar" class="navbar-collapse collapse">
           <ul class="nav navbar-nav">
-            <li><a href="network"><img class="media-object" src="png/007-network.png"></a></li>
-            <li><a href="map"><img class="media-object" src="png/008-global.png"></span></a></li>
-            <li ><a href="timeline"><img class="media-object" src="png/005-graphic-1.png"></span></a></li>
-            <li><a href="provisions"><img class="media-object" src="png/006-graphic.png"></a></li>
-            <li><a href="tree"><img class="media-object" src="png/004-nature.png"></span></a></li>
-            <li><a href="hierarchy"><img class="media-object" src="png/003-business.png"></a></li>
-            <li><a href="faq"><img class="media-object" src="png/002-mark.png"></a></li>
-            <li><a href="about"><img class="media-object" src="png/001-about-us.png" ></a></li>
+            <li class="active"><a href="network">Network</a></li>
+            <li ><a href="timeline">Timeline</a></li>
+            <li><a href="provisions">Provisions</a></li>
+            <li ><a href="tree">Tree</a></li>
+            <li><a href="map">Map</a></li>
+            <li><a href="faq">FAQ</a></li>
+            <li><a href="about">About</a></li>
+
 
           </ul>
         </div><!--/.nav-collapse -->
       </div><!--/.container-fluid -->
     </nav>
-
-    <div class="well">
-      <div class="media">
-    <h4>This is a network in which nodes are countries which are connected based
-      on the similarity of the texts of their constitutions. The network forms 4 distinct
-      clusters of countries corresponding to the Commonwealth, former Soviet Union, Iberian
-      and Francophone countries. These network clusters can be seen on a <a href="map">
-        geographical map</a>
-    </h4>
-  </div>
-</div>
+    This is a network of countries linked together by their constitutions
+    <div id="the-basicsb" class="form-group col-md-1" style="color:black">
+    <a tabindex="0" class="btn btn-lg btn-info" role="button" id="example"
+    data-toggle="popover" data-placement="right" data-trigger="focus"
+    data-html="true"
+    data-content="
+    This graphic displays a network representation of the present day constitutions of 194 countries.
+    Each circle (or 'node') represents the constitution of one country. Constitutions are linked to one
+    another based on the similarity in the language used in that text using Natual Language Processing techniques.
+    The nodes are coloured by finding clusters of well connected nodes; these clusters represent groups of countries which
+    all have similar language in theor constitutions. We can see four clusters; France and former French colonies,
+    Spain and Portugal along with their former colonies, former members of the Soviet Union and the United Kingdom and
+    former members of the British Empire.
+    ">
+    ?</a>
 </div>
 
 
 <script src="https://d3js.org/d3.v3.min.js"></script>
             <script>
 
-            var margin = {top: 20, right: 80, bottom: 60, left: 60}
+            var margin = {top: 20, right: 10, bottom: 10, left: 10}
 
             var w = window,
                     d = document,
@@ -134,10 +153,15 @@ var force = d3.layout.force()
             .linkDistance(100)
             .size([width, height]);
 
-var svg = d3.select("body").append("svg")
-          .attr("width", width)
-          .attr("height", height)
-          .attr("left", 0);
+var svg = d3.select("body")
+.append("div")
+.classed("svg-container", true) //container class to make it responsive
+.append("svg")
+//responsive SVG needs these 2 attributes and no width and height attr
+.attr("preserveAspectRatio", "xMinYMin meet")
+.attr("viewBox", "0 0 600 400")
+//class to make it responsive
+.classed("svg-content-responsive", true);
 
 d3.json("data/network.json", function(error, graph) {
     force

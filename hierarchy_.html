@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<style>
+
+img {
+    width: 100%;
+}
+
+.node {
+  cursor: pointer;
+}
+
+.node circle {
+  fill: #fff;
+  stroke: steelblue;
+  stroke-width: 0.5px;
+}
+
+.node text {
+  font: 12px helvetica;
+  fill:black
+}
+
+.link {
+  fill: none;
+  stroke: #ccc;
+  stroke-width: 1.5px;
+}
+
+</style>
+  <head>
+    <!-- Bootstrap core CSS -->
+    <link href="src/bootstrap.min.css" rel="stylesheet">
+    <link rel="icon"
+          type="image/png"
+          href="favicon.ico">
+          <script src='https://code.jquery.com/jquery-2.1.4.js'></script>
+
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
+  <title>Constitutionology - Hierarchy</title>
+
+  </head>
+  <body>
+    <script>
+    $(function () {
+        $('#example').popover({container:"body",viewport:'body'})
+    });
+    </script>
+
+    <div class="container">
+
+      <!-- Static navbar -->
+      <nav class="navbar navbar-default">
+        <div class="container-fluid">
+          <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+              <span class="sr-only">Toggle navigation</span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="index">Constitutionology</a>
+          </div>
+          <div id="navbar" class="navbar-collapse collapse">
+            <ul class="nav navbar-nav">
+              <li><a href="network">Network</a></li>
+              <li><a href="map">Map</a></li>
+              <li ><a href="timeline">Timeline</a></li>
+              <li><a href="provisions">Provisions</a></li>
+              <li><a href="tree">Tree</a></li>
+              <li><a href="hierarchy">Provision Hierarchy</a></li>
+              <li><a href="faq">FAQ</a></li>
+              <li><a href="about">About</a></li>
+
+
+            </ul>
+          </div><!--/.nav-collapse -->
+        </div><!--/.container-fluid -->
+      </nav>
+
+      <div class="well">
+        <div class="media">
+      <h4>Some constitutional provisions tend to be included in a country's
+        constitution before others. For example, describing how a constitution
+        can be amended is a fundamental aspect of a constitution whereas provisions
+      protecting marginalised groups may take longer to appear within a constitution.
+      The order in which provisions are adopted naturally describes a hierarchy shown below.
+      </a>
+      </h4>
+      </div>
+      </div>
+
+
+  <div class="tabbable"> <!-- Only required for left/right tabs -->
+    <ul class="nav nav-tabs">
+      <li class="active"><a href="#tab1" data-toggle="tab">Full hierarchy</a></li>
+      <li ><a href="#tab2" data-toggle="tab">Upper hierarchy</a></li>
+      <li ><a href="#tab3" data-toggle="tab">Lower hierarchy</a></li>
+      <li><a href="#tab4" data-toggle="tab">Work hierarchy</a></li>
+      <li><a href="#tab5" data-toggle="tab">Education hierarchy</a></li>
+    </ul>
+    <div class="tab-content">
+      <div class="tab-pane active" id="tab1">
+        <img class="media-object" src="img/hierarchy.png">
+        
+
+      </div>
+
+      <div class="tab-pane" id="tab2">
+          <img class="media-object" src="img/hierarchy_high_focused.png">
+      </div>
+
+      <div class="tab-pane" id="tab3">
+          <img class="media-object" src="img/hierarchy_low_focused.png">
+      </div>
+
+      <div class="tab-pane" id="tab4">
+          <img class="media-object" src="img/hierarchy_selected_work.png">
+      </div>
+
+      <div class="tab-pane" id="tab5">
+          <img class="media-object" src="img/hierarchy_selected_education.png">
+      </div>
+
+
+    </div>
+  </div>
+</div>
+
+</div>

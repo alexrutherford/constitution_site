@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<style>
+
+body {
+  font: 10px sans-serif;
+}
+
+.axis path,
+.axis line {
+  fill: none;
+  stroke: #000;
+  size: 30px;
+  shape-rendering: crispEdges;
+}
+
+.tooltip text {
+    font-family: sans-serif,helvetica;
+}
+
+
+.axis text {
+    font-family: sans-serif,helvetica;
+    font-size: 30px;
+}
+
+.x.axis path {
+  display: none;
+}
+
+.line {
+  fill: none;
+  stroke: steelblue;
+  stroke-width: 1.5px;
+}
+
+</style>
+<head>
+  <!-- Bootstrap core CSS -->
+  <link href="bootstrap.min.css" rel="stylesheet">
+  <link rel="icon"
+        type="image/png"
+        href="favicon.ico">
+  </head>
+<body>
+
+  <div class="container">
+
+    <!-- Static navbar -->
+    <nav class="navbar navbar-default">
+      <div class="container-fluid">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="http://getbootstrap.com/examples/navbar/#">Constitutionology</a>
+        </div>
+        <div id="navbar" class="navbar-collapse collapse">
+          <ul class="nav navbar-nav">
+            <li ><a href="index">Home</a></li>
+            <li><a href="about">About</a></li>
+            <li><a href="network">Network</a></li>
+            <li ><a href="timeline">Timeline</a></li>
+            <li class="active"><a href="provisions">Provisions</a></li>
+            <li><a href="tree">Tree</a></li>
+            <li><a href="data">Data</a></li>
+          </ul>
+        </div><!--/.nav-collapse -->
+      </div><!--/.container-fluid -->
+    </nav>
+</div>
+
+<!-- Bootstrap, working on Chrome?
+<div class="dropdown" style="position: absolute; top:80px; left:90px;">
+  <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1"
+  data-toggle="dropdown" aria-haspopup="true" aria-expanded="true" onchange=function({console.log('SELECTED')})>
+    Provision
+    <span class="caret"></span>
+  </button>
+  <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+    <li><a href="#">Action</a></li>
+    <li><a href="#">Another action</a></li>
+    <li><a href="#">Something else here</a></li>
+    <li><a href="#">Separated link</a></li>
+  </ul>
+</div>
+-->
+<select id="dropdown" onchange="" style="position: absolute; top:70px; left:90px; font-size:17px" font-family: sans-serif,helvetica;>
+</select>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.5/d3.min.js"></script>
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.4.3/jquery.min.js"></script>
+<script>
+
+var margin = {top: 20, right: 80, bottom: 150, left: 60}
+
+
+var w = window,
+        d = document,
+        e = d.documentElement,
+        g = d.getElementsByTagName('body')[0],
+        width = w.innerWidth || e.clientWidth || g.clientWidth,
+        height = w.innerHeight|| e.clientHeight|| g.clientHeight;
+
+        width = width - margin.left - margin.right,
+        height = height - margin.top - margin.bottom;
+
+        var tooltip = d3.select("body")
+               .append("div")
+               .style("position", "absolute")
+               .style('padding',' 10px')
+        	    .style("z-index", "10")
+//        	    .style('background-color','gray')
+        	    .style("visibility", "hidden")
+                    .text("a simple tooltip").style('font-size','30px');
+
+var parseDate = d3.time.format("%Y-%m-%d").parse;// %H:%M:%S").parse;
+
+var x = d3.time.scale()
+    .range([0, width]);
+
+var y = d3.scale.linear()
+    .range([height, 0]);
+
+var color = d3.scale.category10();
+
+var xAxis = d3.svg.axis()
+    .scale(x)
+    .orient("bottom");
+
+var yAxis = d3.svg.axis()
+    .scale(y)
+    .orient("left");
+
+var line = d3.svg.line()
+    .interpolate("basis")
+    .x(function(d) { return x(d.date); })
+    .y(function(d) { return y(d.val); });
+
+
+    var parseDate = d3.time.format("%Y-%m-%d").parse;
+        bisectDate = d3.bisector(function(d) { return d.date; }).left;
+
+var svg = d3.select("body").append("svg")
+    .attr("width", width + margin.left + margin.right)
+    .attr("height", height + margin.top + margin.bottom)
+  .append("g")
+    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+
+d3.json('full_provision_descriptions_ordered.json',function(data2){
+
+console.log(data2)
+
+$.each(data2, function (key, value) {$('#dropdown').append('<option value=' + key + '>' + value + '</option>')});
+
+d3.tsv("total.csv", function(error, data) {
+  if (error) throw error;
+
+  var dates=data.map(function(v,i){return parseDate(v.date);});
+
+  var lineChosen = d3.svg.line()
+          .interpolate("basis")
+          .y(function(d) { return y(d); })
+          .x(function(d,i){return x(dates[i]);})
+
+
+  var selectProvision=function(p) {
+    var prov=$('#dropdown').val().toLowerCase();
+      console.log(prov)
+      var res=data.map(function(v,i){return +v[prov];});
+      console.log(res);
+
+      chosen.attr("d", function(d){
+        console.log("HERE");
+        console.log(xAxis)
+
+
+         return lineChosen(data.map(
+
+           function(v,i){return +v[prov];})
+           )
+         });
+
+  };
+
+  $('#dropdown').change(selectProvision)
+
+  var mouseOverFunction = function(d)
+  {tooltip.style("visibility", "visible");
+  x0=x.invert(d3.mouse(this)[0]);
+  var i=bisectDate(data, x0, 1);
+  var yearFormat=d3.time.format("%Y");
+  tooltip.text('The value of '+d.name+' '+yearFormat(x0))
+  ,d3.select(this).transition()
+  .style('stroke','black').style('stroke-width','5px');};
+
+  var mouseOutFunction = function(d) {tooltip.style("visibility", "hidden"),d3.select(this).transition().style('stroke','lightgrey').style('stroke-width','1.5px'),console.log('MOUSE OUT')};
+
+
+  color.domain(d3.keys(data[0]).filter(function(key) { return key !== "date"; }));
+
+  data.forEach(function(d) {
+    d.date = parseDate(d.date);
+  });
+
+  var cities = color.domain().map(function(name) {
+    return {
+      name: name,
+      values: data.map(function(d) {
+        return {date: d.date, val: d[name]*(0.9+Math.random()*0.2)};
+      })
+    };
+  });
+
+  x.domain([d3.min(data, function(d) { return d.date; }),parseDate("2013-01-31")]);
+  x.domain(d3.extent(data, function(d) { return d.date; }));
+console.log('DOMAIN '+x.domain()[1])
+
+//x.domain()[1]=parseDate("2013-01-31")
+
+  y.domain([
+    d3.min(cities, function(c) { return d3.min(c.values, function(v) { return v.val; }); }),
+    d3.max(cities, function(c) { return d3.max(c.values, function(v) { return v.val; }); })
+  ]);
+
+  svg.append("g")
+      .attr("class", "x axis")
+      .attr("transform", "translate(0," + height + ")")
+      .call(xAxis);
+
+  svg.append("g")
+      .attr("class", "y axis")
+      .call(yAxis)
+    .append("text")
+      .attr("transform", "rotate(-90)")
+      .attr("y", 12)
+      .attr("dy", "1.5em")
+      .style("text-anchor", "end")
+//      .text("Val");
+
+  var city = svg.selectAll(".city")
+      .data(cities)
+    .enter().append("g")
+      .attr("class", "city")
+      ;
+
+  var chosen=svg.append("g").append("path").attr("id","chosen").style('stroke','black').style('stroke-width','4px')
+  .attr("class","line");
+
+  city.append("path")
+      .attr("class", "line")
+      .attr("d", function(d) { return line(d.values); })
+      .style("stroke", "#ddddd9").style("stroke-opacity",'0.6')
+      .on("onclick",mouseOverFunction)
+      .on("mouseout",mouseOutFunction);
+
+  names=cities.map(function(d){return d.name;});
+
+//  city.append("text")
+//      .datum(function(d) { return {name: d.name, value: d.values[d.values.length - 1]}; })
+//      .attr("transform", function(d) { return "translate(" + x(d.value.date) + "," + y(d.value.val) + ")"; })
+//      .attr("x", 3)
+//      .attr("dy", ".35em")
+//      .text(function(d) { return d.name; });
+});
+;})
+</script>
