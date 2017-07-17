@@ -181,9 +181,6 @@ var substringMatcher = function(strs) {
 
 var xFunc = function(i) { return i * ((width+0.01)/data.length)};
 
-d3.json('data/out.json',function(outData){
-
-  console.log("KEYS "+d3.keys(outData));
 
 d3.csv('data/out_ranks_provisions_no_ties.txt', function(pos2name) {
 
@@ -286,17 +283,17 @@ var selectProvision = function(prov) {
     //console.log('highlighted '+highlighted);
     //console.log(keys[data.indexOf(keys[i])]);
     console.log(keys[i]);
-    console.log(d3.keys(outData));
-    console.log(outData[keys[i]]);
+    //console.log(d3.keys(outData));
+    //console.log(outData[keys[i]]);
 
-    if(d3.keys(outData).indexOf(keys[i])>0)
-    {
-    var randExample=Math.floor(Math.random()*d3.keys(outData[keys[i]]).length);
-    console.log("Got:"+randExample);
-    console.log(d3.keys(outData[keys[i]])[randExample]);
-    console.log("Example: "+d3.values(outData[keys[i]])[randExample]);
-    }
-    else{console.log('Missing...')};
+    //if(d3.keys(outData).indexOf(keys[i])>0)
+    // {
+    // var randExample=Math.floor(Math.random()*d3.keys(outData[keys[i]]).length);
+    // console.log("Got:"+randExample);
+    // console.log(d3.keys(outData[keys[i]])[randExample]);
+    // console.log("Example: "+d3.values(outData[keys[i]])[randExample]);
+    // }
+    // else{console.log('Missing...')};
 
 
     if(highlighted){console.log("Selected:mouseout "+highlighted);mouseout(circleEnter[0][highlighted],highlighted);}
@@ -353,9 +350,13 @@ var drawArcs = function(i)
     }
 
     var yOffset=0;
+    var xOffset=1;
 
-    if (j<i){yOffset=5}
-    else{yOffset=-5}
+    if (j<i){
+      yOffset=5;
+      xOffset=1}
+    else{yOffset=-5;
+    xOffset=-1}
 
      var lineData=[[xFunc(i),mid+yOffset],[xFunc(i)+((xFunc(j)-xFunc(i))/2),
        mid+heightFunc(i,j)+yOffset],[xFunc(j),mid+yOffset]];
@@ -468,7 +469,6 @@ var durationTime = 1000;
         circleEnter.attr("name",function(d,i){return data[i]["name"];});
         circleEnter.attr("fill", function(d,i){return colorScale(i)});
   });
-});
 });
 });
 </script>
