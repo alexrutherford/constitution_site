@@ -27,6 +27,10 @@ img {
   stroke-width: 1.5px;
 }
 
+.twitter-typeahead {
+ width:100%;
+ }
+
 </style>
   <head>
     <!-- Bootstrap core CSS -->
@@ -133,8 +137,8 @@ img {
         </div>
         </div> -->
 
-        <div id="the-basics">
-          <input id="myTypeAhead" class="typeahead form-control" type="text" placeholder="Search for provisions related to something e.g. children, work, education">
+        <div id="the-basics" width=100%>
+          <input id="myTypeAhead" class="typeahead form-control" style="position: relative; display: inline-block; width:100%;" type="text" placeholder="Search for provisions related to something e.g. children, work, education">
         </div>
         <br>
 
@@ -449,7 +453,7 @@ var durationTime = 1000;
                   fill:"grey",
 
                 })
-                .style({'font-size':"20px"})
+                .style({'font-size':"20px","padding": "5px 10px",'align':'right'})
                 .text(desc);
 
             }
