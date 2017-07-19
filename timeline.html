@@ -66,7 +66,7 @@ path {
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="/">Constitutionology</a>
+          <a class="navbar-brand" style="font-size:2.3em !important" href="/">Constitutionology</a>
         </div>
         <div id="navbar" class="navbar-collapse collapse">
           <ul class="nav navbar-nav">
@@ -108,7 +108,6 @@ path {
     <h4>The number of countries with a constitution appearing in our dataset changes
       over time. This plot shows how that number changes over time and which countries
     enter and leave each year. 1872 marks the unification of 8 states into modern Germany, while 1991-1993 marks the independence of several former members of the Soviet Union.
-
     </h4>
     </div>
     </div>
@@ -121,25 +120,25 @@ path {
 <!-- load the d3.js library -->
 <script src="https://d3js.org/d3.v3.min.js"></script>
 
-<div id="year_span" style="position: absolute; top:200px; left:120px;color:006699;font-size:17px"></div>
-<div id="added_span" style="position: absolute; top:200px; left:230px; width:250px;color:006699;font-size:17px"></div>
-<div id="left_span" style="position: absolute; top:200px; left:530px; width:250px;font-size:17px"></div>
+
+<div id="year_span" style="position: absolute; top:250px; left:120px;color:006699;font-size:17px"></div>
+<div id="added_span" style="position: absolute; top:250px; left:230px; width:250px;color:006699;font-size:17px"></div>
+<div id="left_span" style="position: absolute; top:250px; left:530px; width:250px;font-size:17px"></div>
 
 <script>
 
-// Set the dimensions of the canvas / graph
-var margin = {top: 20, right: 80, bottom: 250, left: 60}
+  // Set the dimensions of the canvas / graph
+  var margin = {top: 20, right: 80, bottom: 250, left: 60}
 
-var w = window,
-        d = document,
-        e = d.documentElement,
-        g = d.getElementsByTagName('body')[0],
-        width = w.innerWidth || e.clientWidth || g.clientWidth,
-        height = w.innerHeight|| e.clientHeight|| g.clientHeight;
+  var w = window,
+          d = document,
+          e = d.documentElement,
+          g = d.getElementsByTagName('body')[0],
+          width = w.innerWidth || e.clientWidth || g.clientWidth,
+          height = w.innerHeight|| e.clientHeight|| g.clientHeight;
 
-        width = width - margin.left - margin.right,
-        height = height - margin.top - margin.bottom;
-
+          width = width - margin.left - margin.right,
+          height = height - margin.top - margin.bottom;
 
 // Parse the date / time
 var parseDate = d3.time.format("%Y-%M-%d").parse,
