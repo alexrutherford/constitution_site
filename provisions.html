@@ -22,7 +22,7 @@
     }
     .axis text {
         font-family: sans-serif, helvetica;
-        font-size: 30px;
+        font-size: 25px;
     }
 
     .x.axis path {
@@ -34,6 +34,9 @@
         stroke: steelblue;
         stroke-width: 1.5px;
     }
+
+.tt-suggestion:hover { cursor: pointer; color: #fff; background-color: #0097cf; } .tt-suggestion.tt-cursor { color: #fff; background-color: #0097cf; }
+
 </style>
 
 <head>
@@ -170,7 +173,7 @@
     keys=Object.keys(json)
     values=keys.map(function(d){return json[d];})
 
-    console.log(values)
+
 
     $('#the-basics .typeahead').typeahead({
       hint: false,
@@ -282,18 +285,17 @@
 
 
                 var selectProvision = function(prov) {
-                    console.log('GOT: '+prov)
-                    console.log('GOT 2: '+values.indexOf(prov))
+
 
                     chosen.attr("d", function(d) {
                         k=keys[values.indexOf(prov)];
-                        console.log('GOT 3: '+k)
+
                         k=k.toLowerCase();
 
                         return lineChosen(data.map(
 
                             function(v, i) {
-                                if(k=='habcorp'){console.log('habeas '+v[k])}
+
                                 return +v[k];
                             }))
                     });
@@ -303,7 +305,6 @@
                 var selectRandom=function()
                 {
                   var chosen=values[Math.floor(Math.random() * keys.length)];
-                  console.log('Chose'+chosen);
                   $("#myTypeAhead").typeahead('val',chosen);
                   selectProvision(chosen);
                 }
@@ -420,7 +421,6 @@
                 //      .text(function(d) { return d.name; });
 
                 $('.typeahead').bind('typeahead:select', function(ev, suggestion) {
-                    console.log('NOW GOT'+suggestion)
                     selectProvision(suggestion);
                 });
 

@@ -209,7 +209,7 @@ d3.csv('data/out_ranks_provisions_no_ties.txt', function(pos2name) {
   revKeys=pos2name.map(function(d){return +d['n'];});
 
 d3.tsv('data/provision_adjacency_index.txt', function(data2) {
-  console.log(data2[0]);
+
 
 d3.csv("data/names_sorted.txt", function(trans) {
   data=trans.map(function(d)
@@ -239,7 +239,7 @@ function checkKey(e) {
 
     if (e.keyCode == '37') {
        // left arrow
-       console.log('Left '+highlighted);
+
        if(highlighted>0)
        // Don't overflow
        {
@@ -255,7 +255,7 @@ function checkKey(e) {
        if(highlighted<keys.length-1)
        // Don't overflow
        {
-        console.log('Right '+highlighted);
+
 
         mouseout(circleEnter[0][highlighted],highlighted);
         highlighted=highlighted+1;
@@ -287,36 +287,14 @@ $('#the-basics .typeahead').typeahead({
 });
 
 $('.typeahead').bind('typeahead:select', function(ev, suggestion) {
-    console.log('NOW GOT'+suggestion)
+
     selectProvision(suggestion);
 });
 
 var selectProvision = function(prov) {
-    console.log('GOT: '+prov)
+
 
     i=values.indexOf(prov);
-    //i=data.indexOf(keys[i]);
-    //i=data.indexOf(keys[i]);
-
-    console.log('GOT 2: '+i)
-    console.log('Rank '+data.indexOf(keys[i]))
-    console.log('Highlighted is '+highlighted);
-    //highlighted=data.indexOf(keys[i]);
-    //console.log('highlighted '+highlighted);
-    //console.log(keys[data.indexOf(keys[i])]);
-    console.log(keys[i]);
-    //console.log(d3.keys(outData));
-    //console.log(outData[keys[i]]);
-
-    //if(d3.keys(outData).indexOf(keys[i])>0)
-    // {
-    // var randExample=Math.floor(Math.random()*d3.keys(outData[keys[i]]).length);
-    // console.log("Got:"+randExample);
-    // console.log(d3.keys(outData[keys[i]])[randExample]);
-    // console.log("Example: "+d3.values(outData[keys[i]])[randExample]);
-    // }
-    // else{console.log('Missing...')};
-
 
     if(highlighted){console.log("Selected:mouseout "+highlighted);mouseout(circleEnter[0][highlighted],highlighted);}
     highlighted=data.indexOf(keys[i]);
@@ -327,7 +305,7 @@ var selectProvision = function(prov) {
   {
     temp=Math.floor(Math.random() * keys.length);
     var chosen=values[temp];
-    console.log('Chose'+chosen);
+
 
     $("#myTypeAhead").typeahead('val',chosen);
     selectProvision(chosen);
@@ -358,15 +336,9 @@ var drawArcs = function(i)
   {
     var lineGenerator = d3.svg.line().interpolate("monotone");
 
-//        d3.select('path')
-//	       .attr('d',lineGenerator([[j,60],[j+(j-i)/2,60],[j,60]]));
-
-
     var heightFunc = function(i,j){
-      //console.log(2.0*mid*(i-j)/values.length);
+
       var temp = 1.0*mid*(i-j)/values.length;
-       //if (i<j){temp=temp-delta;}
-       //else{temp=temp+delta;}
 
       return temp;
     }
@@ -401,7 +373,7 @@ var durationTime = 1000;
 
 
         function mouseout(d,i) {
-            console.log("mouse out "+i);
+
 
             $("#myTypeAhead").typeahead('val','');
 
@@ -413,7 +385,7 @@ var durationTime = 1000;
 
             d3.select("#id"+data[i]["name"]).remove();
 
-            //console.log(d3.select("id"+data[i]["name"]));
+
 
             for(j=0;j<values.length;j++)
             {
@@ -436,7 +408,7 @@ var durationTime = 1000;
 
             function mouseover(d,i) {
 
-                console.log("Mouse over "+i);
+
 
                 if (highlighted){mouseout(circleEnter[0][highlighted],highlighted);}
 
@@ -454,8 +426,6 @@ var durationTime = 1000;
                 .attr("r", 10)
                 .attr('fill-opacity', 0.5);
 
-                console.log("Name: "+data[i]["name"]);
-                console.log("Data: "+data2[i][10])
 
                 drawArcs(i);
 
@@ -481,7 +451,6 @@ var durationTime = 1000;
         .on("mouseover", mouseover);
         //.on("mouseout", mouseout);
 
-        console.log(circleEnter[0][1]);
 
         circleEnter.text(function(d,i){return data[i]["name"]});
 
