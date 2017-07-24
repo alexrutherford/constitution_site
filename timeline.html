@@ -165,7 +165,7 @@ var valueline = d3.svg.line()
 var svg = d3.select("body")
     .append("svg")
         .attr("width", width + margin.left + margin.right)
-        .attr("height", height + margin.top + margin.bottom)
+        .attr("height", height + margin.top+50)
     .append("g")
         .attr("transform",
               "translate(" + margin.left + "," + margin.top + ")");
@@ -198,6 +198,7 @@ d3.tsv("data/country_change_1900.csv", function(error, data) {
         .attr("class", "line")
         .attr("d", valueline(data));
 
+
     // Add the X Axis
     svg.append("g")
         .attr("class", "x axis")
@@ -228,6 +229,44 @@ d3.tsv("data/country_change_1900.csv", function(error, data) {
 //        .style("opacity", 0.5)
 //        .attr("x1", width)
 //        .attr("x2", width);
+
+    // Mark 1872 jump
+    lineSvg.append("line")
+    .attr("x1", x(parseDate('1872-01-01')))
+    .attr("y1", y(0))
+    .attr("x2", x(parseDate('1872-01-01')))
+    .attr("y2", y(200))
+    .style("stroke","#bc4244")
+    .style("stroke-dasharray", "5")
+    .style("opacity", 0.5)
+    .style("stroke-width",3);
+
+    // Mark 1960 jump
+    lineSvg.append("line")
+    .attr("x1", x(parseDate('1960-01-01')))
+    .attr("y1", y(0))
+    .attr("x2", x(parseDate('1960-01-01')))
+    .attr("y2", y(200))
+    .style("stroke","#bc4244")
+    .style("stroke-dasharray", "5")
+    .style("opacity", 0.5)
+    .style("stroke-width",3);
+
+    // Mark 1991 jump
+    lineSvg.append("line")
+    .attr("x1", x(parseDate('1991-01-01')))
+    .attr("y1", y(0))
+    .attr("x2", x(parseDate('1991-01-01')))
+    .attr("y2", y(200))
+    .style("stroke","#bc4244")
+    .style("stroke-dasharray", "5")
+    .style("opacity", 0.5)
+    .style("stroke-width",3);
+
+
+    console.log(x(1945));
+    console.log(y(150));
+    console.log(y(0));
 
     // append the circle at the intersection
     focus.append("circle")
@@ -330,7 +369,5 @@ d3.tsv("data/country_change_1900.csv", function(error, data) {
 
 </script>
 
-<img class="media-object" src="img/unicef_low.png" />
-Powered by Apache, Twitter Bootstrap and <a href='https://twitter.github.io/typeahead.js/examples/'>Typeahead</a>
 
 </body>

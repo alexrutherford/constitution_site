@@ -102,7 +102,7 @@ alignment-baseline:
         </div><!--/.nav-collapse -->
       </div><!--/.container-fluid -->
     </nav>
-    
+
     <div class="well">
       <div class="media">
     <h4>This is a network in which nodes are countries which are connected based
@@ -177,6 +177,8 @@ d3.json("data/network.json", function(error, graph) {
                  .data(graph.nodes)
                  .enter()
                  .append('g')
+                 .attr('n',function(d,i){return i;})
+                 .attr('_name',function(d,i){return d.id;})
                  .classed('gnode', true)
                  .on("mouseover", mouseover)
                  .on("mouseout", mouseout)
@@ -185,21 +187,23 @@ d3.json("data/network.json", function(error, graph) {
     var node = gnodes.append("circle")
                .attr("class", "node")
                .attr("r", function(d) {return 9;})
-//               .attr("r", 1)
+               .attr("n", 1)
                .style("fill", function(d) { return color[d.type]; })
                ;
 
     // Append the labels to each group
     var labels = gnodes.append("text")
     .text(function(d) {
-        if(d.degree>0.0){return d.id}
+        if(d.degree<0.0){return d.id}
         else
         {return ''};
     })
-    .attr("class", "label");
-
-
-//    .style("fill", function(d) { return color[d.type]; });
+    .attr("class", "label")
+    .attr('n',function(d,i){return i})
+    .attr("_name",function(d,i){return d.id})
+    .style("fill", function(d) { return 'grey'; })
+    .style("stroke-width",0.0)
+    .style("stroke","grey");
 
     // node.append("title")
     // .text(function(d) { return d.id; });
@@ -235,14 +239,42 @@ d3.json("data/network.json", function(error, graph) {
 });
 
 function mouseover() {
+
+  var n=this.getAttribute('n');
+
+  chosen=$("text[n='"+n+"']")[0];
+
+  chosen.textContent=this.getAttribute('_name');
+
+  console.log(chosen)
+
+  d3.select(chosen).transition()
+  .duration(350)
+  .style("font-size", 40)
+
+
     d3.select(this).select("circle").transition()
     .duration(350)
-    .attr("r", 30);
+    .attr("r", 30)
 
 
 }
 
 function mouseout() {
+  var n=this.getAttribute('n');
+
+  chosen=$("text[n='"+n+"']")[0];
+
+  chosen.textContent=this.getAttribute('_name');
+
+  console.log(chosen)
+
+  d3.select(chosen).transition()
+  .duration(350)
+  .style("font-size", 20)
+
+
+
     d3.select(this).select("circle").transition()
     .duration(350)
     .attr("r", function(d) {return 9;});
