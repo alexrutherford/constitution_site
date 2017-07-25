@@ -262,11 +262,41 @@ function click(d) {
   if (d.children) {
     d._children = d.children;
     d.children = null;
+
   } else {
     d.children = d._children;
     d._children = null;
+
   }
   update(d);
+
+  // if (d.children){return true}
+  // else{return false}
 }
+
+var depth=0;
+
+window.setInterval(function(){
+  var res=true;
+  var cur=root.children[Math.floor(Math.random() * root.children.length)]
+
+  console.log('Start')
+  click(cur);
+
+  if(cur.children)
+  {
+  parent=cur;
+  cur=cur.children[Math.floor(Math.random() * cur.children.length)]
+  setTimeout(function(){click(cur);
+    setTimeout(function(){click(cur);
+      setTimeout(function(){click(parent)}
+    ,1000)} // to collapse back
+    ,2000)} // to open second layer
+    ,3000) // to open first layer
+  }
+
+  }
+
+  ,10000)
 
 </script>
