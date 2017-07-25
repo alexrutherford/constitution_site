@@ -275,6 +275,7 @@
                 });
 
                 var lineChosen = d3.svg.line()
+
                     .interpolate("basis")
                     .y(function(d) {
                         return y(d);
@@ -286,30 +287,44 @@
 
                 var selectProvision = function(prov) {
 
-                    chosen.attr("d", function(d) {
-                        k=keys[values.indexOf(prov)];
+                  console.log('Transition down');
+                  chosen.transition()
+                  .duration(500)
+                  .style("stroke-width",0)
+                  .each("end", function(){
+                    console.log('Transition line');
 
-                        k=k.toLowerCase();
+                      chosen.attr("d", function(d) {
+                          k=keys[values.indexOf(prov)];
 
-                        return lineChosen(data.map(
+                          k=k.toLowerCase();
 
-                            function(v, i) {
 
-                                return +v[k];
-                            }))
+                          return lineChosen(data.map(
 
-                    });
-                      // lineChosen.transition()
-                      // .duration(1350)
-                      // .style("color", "red");
+                              function(v, i) {
+
+                                  return +v[k];
+                              }))
+                      });
+
+                  })
+
+                    console.log('Transition up');
+
+
+                       chosen.transition()
+                       .delay(500)
+                       .duration(500)
+                        .style("stroke-width", 5);
 
                 };
 
                 var selectRandom=function()
                 {
-                  var chosen=values[Math.floor(Math.random() * keys.length)];
-                  $("#myTypeAhead").typeahead('val',chosen);
-                  selectProvision(chosen);
+                  var n=values[Math.floor(Math.random() * keys.length)];
+                  $("#myTypeAhead").typeahead('val',n);
+                  selectProvision(n);
                 }
 
                 $(document).ready(function(){
@@ -399,7 +414,16 @@
                     .attr("class", "city");
 
                 var chosen = svg.append("g").append("path").attr("id", "chosen").style('stroke', 'black').style('stroke-width', '4px')
-                    .attr("class", "line");
+                    .attr("class", "line")
+
+                    // chosen
+                    // .transition()
+                    // .duration(1350)
+                    //  .style("stroke-width", 10)
+                    // .delay(1000)
+                    // .transition()
+                    // .duration(1350)
+                    // .style("stroke-width", 10);
 
                 city.append("path")
                     .attr("class", "line")
