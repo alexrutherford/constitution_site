@@ -241,7 +241,9 @@
                 return x(d.date);
             })
             .y(function(d) {
-                return y(d.val);
+                if(isNaN(d.val)){return 0.1;}
+                else
+                {return y(d.val);}
             });
 
 
@@ -287,36 +289,44 @@
 
                 var selectProvision = function(prov) {
 
-                  console.log('Transition down');
-                  chosen.transition()
-                  .duration(500)
-                  .style("stroke-width",0)
-                  .each("end", function(){
-                    console.log('Transition line');
-
-                      chosen.attr("d", function(d) {
-                          k=keys[values.indexOf(prov)];
-
-                          k=k.toLowerCase();
-
-
-                          return lineChosen(data.map(
-
-                              function(v, i) {
-
-                                  return +v[k];
-                              }))
-                      });
-
-                  })
-
-                    console.log('Transition up');
-
+                  // chosen.transition()
+                  // .duration(500)
+                  // .style("stroke-width",0)
+                  // .each("end", function(){
+                  //
+                  //     // chosen.attr("d", function(d) {
+                  //     //     k=keys[values.indexOf(prov)];
+                  //     //
+                  //     //     k=k.toLowerCase();
+                  //     //
+                  //     //
+                  //     //     return lineChosen(data.map(
+                  //     //
+                  //     //         function(v, i) {
+                  //     //
+                  //     //             return +v[k];
+                  //     //         }))
+                  //     // });
+                  //
+                  // })
 
                        chosen.transition()
-                       .delay(500)
-                       .duration(500)
-                        .style("stroke-width", 5);
+                       .delay(0)
+                       .duration(1000)
+                        .style("stroke-width", 4)
+                        .attr("d", function(d) {
+                            k=keys[values.indexOf(prov)];
+
+                            k=k.toLowerCase();
+
+
+                            return lineChosen(data.map(
+
+                                function(v, i) {
+
+                                    return +v[k];
+                                }))
+                        });
 
                 };
 
@@ -333,7 +343,7 @@
                   });
                 });
 
-                window.setInterval(function(){if(fresh){selectRandom()}},5000);
+                window.setInterval(function(){if(fresh){selectRandom()}},7000);
 
                 //$('#dropdown').change(selectProvision)
 

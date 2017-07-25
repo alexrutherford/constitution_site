@@ -318,8 +318,12 @@ d3.tsv("data/country_change_1900.csv", function(error, data) {
 		    d1 = data[i],
 		    d = x0 - d0.date > d1.date - x0 ? d1 : d0;
         $('#year_span').text('Year: '+formatDate(d.date));
-        $('#left_span').text('Left: \n'+d.left.join(', '));
-        $('#added_span').text('Added: \n'+d.added.join(", "));
+        $('#left_span').text(function(){
+          if(d.left[0].length>0){return 'Left: \n'+d.left.join(', ')}
+          else{return ''}});
+        $('#added_span').text(function(){
+          if(d.added[0].length>0){return 'Added: \n'+d.added.join(', ')}
+          else{return ''}});
 
 
 		focus.select("circle.y")
