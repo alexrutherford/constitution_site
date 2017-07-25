@@ -186,7 +186,7 @@ d3.json("data/network.json", function(error, graph) {
 
     var node = gnodes.append("circle")
                .attr("class", "node")
-               .attr("r", function(d) {return 9;})
+               .attr("r", function(d) {return 6;})
                .attr("n", 1)
                .style("fill", function(d) { return color[d.type]; })
                ;
@@ -241,43 +241,72 @@ d3.json("data/network.json", function(error, graph) {
 function mouseover() {
 
   var n=this.getAttribute('n');
+  var name=this.getAttribute('_name')
+  mouseoverN(n,name);
+}
 
+function mouseoverN(n,name,callback)
+{
   chosen=$("text[n='"+n+"']")[0];
 
-  chosen.textContent=this.getAttribute('_name');
+  chosen.textContent=name;
 
   console.log(chosen)
 
   d3.select(chosen).transition()
-  .duration(350)
-  .style("font-size", 40)
+  .duration(1350)
+  .style("font-size", 30)
 
-
-    d3.select(this).select("circle").transition()
-    .duration(350)
+    d3.select($(".gnode[n='"+n+"']")[0]).select("circle").transition()
+    .duration(1350)
     .attr("r", 30)
 
-
+    callback(n,name);
+    // call mouseout
 }
 
 function mouseout() {
   var n=this.getAttribute('n');
+  var name=this.getAttribute('_name');
 
+
+  mouseoutN(n,name);
+}
+
+function mouseoutN(n,name)
+{
   chosen=$("text[n='"+n+"']")[0];
 
-  chosen.textContent=this.getAttribute('_name');
+  chosen.textContent=name;
 
   console.log(chosen)
 
   d3.select(chosen).transition()
-  .duration(350)
-  .style("font-size", 15)
+  .delay(500)
+  .duration(1350)
+  .style("font-size", 12)
+
+    d3.select($(".gnode[n='"+n+"']")[0]).select("circle").transition()
+    .delay(750)
+    .duration(1350)
+    .attr("r", function(d) {return 6;});
 
 
-
-    d3.select(this).select("circle").transition()
-    .duration(350)
-    .attr("r", function(d) {return 9;});
 }
+
+window.setInterval(function(){
+  var i =Math.floor(Math.random()*194);
+
+//  gnodes[i].mouseover();
+
+//  console.log($(".gnode[n='0']")[0]);
+
+  name=$(".gnode[n='"+i+"']")[0].getAttribute('_name');
+  console.log('i'+i)
+  console.log('Name'+name);
+
+  mouseoverN(i,name,mouseoutN);
+
+}, 3000);
 
 </script>
