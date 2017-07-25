@@ -289,27 +289,6 @@
 
                 var selectProvision = function(prov) {
 
-                  // chosen.transition()
-                  // .duration(500)
-                  // .style("stroke-width",0)
-                  // .each("end", function(){
-                  //
-                  //     // chosen.attr("d", function(d) {
-                  //     //     k=keys[values.indexOf(prov)];
-                  //     //
-                  //     //     k=k.toLowerCase();
-                  //     //
-                  //     //
-                  //     //     return lineChosen(data.map(
-                  //     //
-                  //     //         function(v, i) {
-                  //     //
-                  //     //             return +v[k];
-                  //     //         }))
-                  //     // });
-                  //
-                  // })
-
                        chosen.transition()
                        .delay(0)
                        .duration(1000)
@@ -457,7 +436,7 @@
                     selectProvision(suggestion);
                 });
 
-                $('.typeahead').on('click',function(){fresh=false;})
+                $('.typeahead').on('click',function(){$(this).val("");fresh=false;})
 
             });
 
