@@ -105,11 +105,9 @@ alignment-baseline:
 
     <div class="well">
       <div class="media">
-    <h4>This is a network in which nodes are countries which are connected based
-      on the similarity of the texts of their constitutions. The network forms 4 distinct
+    <h4>This is a network in which nodes are countries which are connected if the texts of their constitutions are similar. The network forms 4 distinct
       clusters of countries corresponding to the Commonwealth, former Soviet Union, Iberian
-      and Francophone countries. These network clusters can be seen on a <a href="map">
-        geographical map</a>
+      and Francophone countries.
     </h4>
   </div>
 </div>
@@ -282,12 +280,12 @@ function mouseoutN(n,name)
   console.log(chosen)
 
   d3.select(chosen).transition()
-  .delay(500)
+  .delay(1350)
   .duration(1350)
   .style("font-size", 12)
 
     d3.select($(".gnode[n='"+n+"']")[0]).select("circle").transition()
-    .delay(750)
+    .delay(1350)
     .duration(1350)
     .attr("r", function(d) {return 6;});
 
@@ -296,14 +294,7 @@ function mouseoutN(n,name)
 
 window.setInterval(function(){
   var i =Math.floor(Math.random()*194);
-
-//  gnodes[i].mouseover();
-
-//  console.log($(".gnode[n='0']")[0]);
-
   name=$(".gnode[n='"+i+"']")[0].getAttribute('_name');
-  console.log('i'+i)
-  console.log('Name'+name);
 
   mouseoverN(i,name,mouseoutN);
 
