@@ -12,12 +12,13 @@ fill:
 stroke:
 #5d6263;
 stroke-opacity:
-    .08;
+    .06;
 }
 
 .label {
 fill:
 #3f403e;
+align: center;
 font-family: "Sans Serif";
 cursor:
     default;
@@ -191,6 +192,7 @@ d3.json("data/network.json", function(error, graph) {
 
     // Append the labels to each group
     var labels = gnodes.append("text")
+    .attr("text-anchor", "middle")
     .text(function(d) {
         if(d.degree<0.0){return d.id}
         else
