@@ -275,6 +275,7 @@ function click(d) {
 }
 
 var depth=0;
+var timeOut=12000;// default for depth 2
 
 window.setInterval(function(){
   var res=true;
@@ -282,6 +283,8 @@ window.setInterval(function(){
 
   console.log('Start')
   click(cur);
+
+  timeOut=12000; // default for depth 2
 
   if(cur.children)
   {
@@ -291,12 +294,12 @@ window.setInterval(function(){
     setTimeout(function(){click(cur);
       setTimeout(function(){click(parent)}
     ,1000)} // to collapse back
-    ,2000)} // to open second layer
-    ,3000) // to open first layer
+    ,6000)} // to open second layer,6000
+    ,4000) // to open first layer,4000
+  }
+  else{timeOut=2000}
   }
 
-  }
-
-  ,10000)
+  ,timeOut)
 
 </script>

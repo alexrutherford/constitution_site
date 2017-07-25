@@ -148,9 +148,13 @@ var color = ['#fbb4ae','#b3cde3','#ccebc5','#decbe4'];
 
 
 var force = d3.layout.force()
+            //.alpha(1.5) //decay of movement
             .charge(-200)
             .linkDistance(100)
             .size([width, height]);
+
+setInterval(function(){force.alpha(0.1);},250);
+// Keep the graph moving
 
 var svg = d3.select("body").append("svg")
           .attr("width", width)
