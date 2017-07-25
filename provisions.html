@@ -188,6 +188,8 @@
     <div class="col-sm-4">
     <script>
 
+        var fresh=true;
+
         var margin = {
             top: 20,
             right: 60,
@@ -284,7 +286,6 @@
 
                 var selectProvision = function(prov) {
 
-
                     chosen.attr("d", function(d) {
                         k=keys[values.indexOf(prov)];
 
@@ -296,7 +297,11 @@
 
                                 return +v[k];
                             }))
+
                     });
+                    lineChosen.transition()
+                    .duration(1350)
+                    .style("color", "red");
 
                 };
 
@@ -313,6 +318,7 @@
                   });
                 });
 
+                window.setInterval(function(){if(fresh){selectRandom()}},5000);
 
                 //$('#dropdown').change(selectProvision)
 
@@ -419,14 +425,16 @@
                 //      .text(function(d) { return d.name; });
 
                 $('.typeahead').bind('typeahead:select', function(ev, suggestion) {
+
                     selectProvision(suggestion);
                 });
 
+                $('.typeahead').on('click',function(){fresh=false;})
 
             });
         });
 
-
+        selectRandom();
 
     </script>
 
