@@ -255,7 +255,6 @@ function mouseoverN(n,name,callback)
 
   chosen.textContent=name;
 
-  console.log(chosen)
 
   d3.select(chosen).transition()
   .duration(1350)
@@ -277,13 +276,26 @@ function mouseout() {
   mouseoutN(n,name);
 }
 
+function mouseClearN(n)
+{
+  toClear=$("text[n='"+n+"']")[0];
+
+  d3.select(toClear).transition()
+  .duration(2000)
+  .style("font-size", 0)
+  .each("end",function(){toClear.textContent='';})
+
+
+
+}
+
 function mouseoutN(n,name)
 {
   chosen=$("text[n='"+n+"']")[0];
 
   chosen.textContent=name;
 
-  console.log(chosen)
+//  console.log(chosen)
 
   d3.select(chosen).transition()
   .delay(1350)
@@ -298,9 +310,20 @@ function mouseoutN(n,name)
 
 }
 
+var pushedLabels = Array();
+
 window.setInterval(function(){
   var i =Math.floor(Math.random()*194);
   name=$(".gnode[n='"+i+"']")[0].getAttribute('_name');
+
+  pushedLabels.push(i);
+
+  if(pushedLabels.length>20)
+  {console.log('Length 10');
+  var j=pushedLabels.shift()
+  console.log('Clearing '+j);
+  mouseClearN(j);}
+  // Pop old labels
 
   mouseoverN(i,name,mouseoutN);
 
