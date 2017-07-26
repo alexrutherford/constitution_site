@@ -196,7 +196,9 @@ d3.tsv("data/country_change_1900.csv", function(error, data) {
     // Add the valueline path.
     lineSvg.append("path")
         .attr("class", "line")
-        .attr("d", valueline(data));
+        .attr("d", valueline(data))
+        ;
+    // Todo add something here so line terminates at y=0
 
 
     // Add the X Axis
@@ -263,10 +265,6 @@ d3.tsv("data/country_change_1900.csv", function(error, data) {
     .style("opacity", 0.5)
     .style("stroke-width",3);
 
-
-    console.log(x(1945));
-    console.log(y(150));
-    console.log(y(0));
 
     // append the circle at the intersection
     focus.append("circle")
