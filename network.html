@@ -159,6 +159,8 @@ setInterval(function(){force.alpha(0.1);},250);
 // Keep the graph moving
 
 var pushedLabels = Array();
+var cycle=true;
+// Stop cycling after click
 
 var svg = d3.select("body").append("svg")
           .attr("width", width)
@@ -189,6 +191,7 @@ d3.json("data/network_lat_long.json", function(error, graph) {
     }
     ,12000)
 
+
     var link = svg.selectAll(".link")
                .data(graph.links)
                .enter().append("line")
@@ -207,6 +210,7 @@ d3.json("data/network_lat_long.json", function(error, graph) {
                  .classed('gnode', true)
                  .on("mouseover", mouseover)
                  .on("mouseout", mouseout)
+                 .on("click",click)
                  .call(force.drag);
 
     var node = gnodes.append("circle")
@@ -264,6 +268,30 @@ d3.json("data/network_lat_long.json", function(error, graph) {
 
 });
 
+function click(){
+  var n=this.getAttribute('n');
+  var name=this.getAttribute('_name')
+
+  clickN(n,name);
+}
+
+function clickN(n,name)
+{
+console.log('Clicked!');
+
+while(pushedLabels.length>0)
+// Keep getting rid of all labels
+{
+var j=pushedLabels.shift()
+console.log('Clearing '+j);
+console.log('Length now '+pushedLabels.length)
+mouseClearN(j);}
+
+//console.log($(".gnode[n='"+n+"']")[0]))
+
+cycle=false;
+}
+
 function mouseover() {
 
   var n=this.getAttribute('n');
@@ -276,8 +304,6 @@ function mouseoverN(n,name,callback)
   chosen=$("text[n='"+n+"']")[0];
 
   chosen.textContent=name;
-
-
   d3.select(chosen).transition()
   .duration(1350)
   .style("font-size", 30)
@@ -345,6 +371,8 @@ for(j=0;j<10;j++)
 
 window.setInterval(
   function(){
+    if(cycle)
+    {
     var i = Math.floor(Math.random()*194);
     var name=$(".gnode[n='"+i+"']")[0].getAttribute('_name');
     pushedLabels.push(i);
@@ -357,6 +385,6 @@ window.setInterval(
     // Pop old labels
 
     mouseoverN(i,name,mouseoutN);
-
-  }, 2000);
+}
+  }, 3000);
 </script>
