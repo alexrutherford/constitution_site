@@ -148,24 +148,46 @@ var color = ['#fbb4ae','#b3cde3','#ccebc5','#decbe4'];
 
 
 var force = d3.layout.force()
-            //.alpha(1.5) //decay of movement
+            .alpha(1000) //decay of movement
             .charge(-200)
+            .friction(0.5)
             .linkDistance(100)
             .size([width, height]);
 
+
 setInterval(function(){force.alpha(0.1);},250);
 // Keep the graph moving
+
+var pushedLabels = Array();
 
 var svg = d3.select("body").append("svg")
           .attr("width", width)
           .attr("height", height)
           .attr("left", 0);
 
-d3.json("data/network.json", function(error, graph) {
+d3.json("data/network_lat_long.json", function(error, graph) {
+  var dataNodes=graph['nodes'].map(function(d){return {'x':width
+  ,'y':height}});
+
+    graph.nodes.forEach(function(d){d.x=margin.left+(d.long+180)/360.*(width-margin.left-margin.right);
+      d.y=height-height*(d.lat+90)/180})
+
+    var colours=graph['nodes'].map(function(d,i){return color[d['type']]});
+
+        setTimeout(function(){
+    node.transition().duration(3000).style('fill',function(d,i) { return colours[i]; });
+    // Gradually colour the communities
+},2000);
+
+    setTimeout(function(){
     force
     .nodes(graph.nodes)
     .links(graph.links)
+    //.friction(0.)
+    .friction(0.5)
     .start();
+    }
+    ,12000)
 
     var link = svg.selectAll(".link")
                .data(graph.links)
@@ -191,7 +213,7 @@ d3.json("data/network.json", function(error, graph) {
                .attr("class", "node")
                .attr("r", function(d) {return 6;})
                .attr("n", 1)
-               .style("fill", function(d) { return color[d.type]; })
+               .style("fill", 'lightgrey')
                ;
 
     // Append the labels to each group
@@ -285,8 +307,6 @@ function mouseClearN(n)
   .style("font-size", 0)
   .each("end",function(){toClear.textContent='';})
 
-
-
 }
 
 function mouseoutN(n,name)
@@ -295,7 +315,7 @@ function mouseoutN(n,name)
 
   chosen.textContent=name;
 
-//  console.log(chosen)
+  console.log('Mouse Out')
 
   d3.select(chosen).transition()
   .delay(1350)
@@ -310,23 +330,33 @@ function mouseoutN(n,name)
 
 }
 
-var pushedLabels = Array();
+$(document).ready(function() {
+for(j=0;j<10;j++)
+{var i = Math.floor(Math.random()*194);
+  console.log('i: '+i);
 
-window.setInterval(function(){
-  var i =Math.floor(Math.random()*194);
-  name=$(".gnode[n='"+i+"']")[0].getAttribute('_name');
-
+  var name=$(".gnode[n='"+i+"']")[0].getAttribute('_name');
   pushedLabels.push(i);
-
-  if(pushedLabels.length>20)
-  {console.log('Length 10');
-  var j=pushedLabels.shift()
-  console.log('Clearing '+j);
-  mouseClearN(j);}
-  // Pop old labels
 
   mouseoverN(i,name,mouseoutN);
 
-}, 3000);
+  }
+})
 
+window.setInterval(
+  function(){
+    var i = Math.floor(Math.random()*194);
+    var name=$(".gnode[n='"+i+"']")[0].getAttribute('_name');
+    pushedLabels.push(i);
+
+    if(pushedLabels.length>20)
+    {console.log('Length 10');
+    var j=pushedLabels.shift()
+    console.log('Clearing '+j);
+    mouseClearN(j);}
+    // Pop old labels
+
+    mouseoverN(i,name,mouseoutN);
+
+  }, 2000);
 </script>
