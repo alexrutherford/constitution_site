@@ -134,7 +134,7 @@ opacity:0;white-space: pre;font-family: "Sans Serif";"></div>
                     height = height - margin.top - margin.bottom;
 
 var color = ['#fbb4ae','#b3cde3','#ccebc5','#decbe4'];
-var color = ['#46C66D','#28C6C6','#7348B3','#FF9F40'];
+//var color = ['#46C66D','#28C6C6','#7348B3','#FF9F40'];
 // Manu's horrendous colours
 
 var commsNames=['French','ex-Soviet','Iberian','Commonwealth']
@@ -207,11 +207,17 @@ var svg = d3.select("body").append("svg")
           .attr("height", height)
           .attr("left", 0);
 
+d3.selection.prototype.moveToFront = function() {
+            return this.each(function(){
+              this.parentNode.appendChild(this);
+            });
+          };
+
 d3.json("data/network_lat_long.json", function(error, graph) {
   var dataNodes=graph['nodes'].map(function(d){return {'x':width
   ,'y':height}});
 
-    graph.nodes.forEach(function(d){d.x=margin.left+(d.long+180)/360.*(width-margin.left-margin.right);
+    graph.nodes.forEach(function(d){d.x=margin.left+(d.long+180.0)/360.*(width-margin.left-margin.right);
       d.y=height-margin.top*2-height*(d.lat+90)/180})
 
     var colours=graph['nodes'].map(function(d,i){return color[d['type']]});
@@ -273,7 +279,8 @@ d3.json("data/network_lat_long.json", function(error, graph) {
     .attr("_name",function(d,i){return d.id})
     .style("fill", function(d) { return 'grey'; })
     .style("stroke-width",0.0)
-    .style("stroke","grey");
+    .style("stroke","grey")
+    .style("z-index",999);
 
     // node.append("title")
     // .text(function(d) { return d.id; });
@@ -375,12 +382,15 @@ function mouseover() {
 
   var n=this.getAttribute('n');
   var name=this.getAttribute('_name')
+
   mouseoverN(n,name);
 }
 
 function mouseoverN(n,name,callback)
 {
   chosen=$("text[n='"+n+"']")[0];
+
+  d3.select(chosen).moveToFront();
 
   chosen.textContent=name;
   d3.select(chosen).transition()
