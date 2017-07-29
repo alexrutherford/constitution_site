@@ -114,6 +114,9 @@ alignment-baseline:
 </div>
 </div>
 
+<div id="info_span" style="position: absolute; top:250px; left:80; width:120;
+color:006699;font-size:12px;background-color: rgba(255,255,255,0.7);
+opacity:0;white-space: pre;font-family: "Sans Serif";"></div>
 
 <script src="https://d3js.org/d3.v3.min.js"></script>
             <script>
@@ -130,32 +133,69 @@ alignment-baseline:
                     width = width - margin.left - margin.right,
                     height = height - margin.top - margin.bottom;
 
-
-//            var width = 2000,
-//                height = 1200;
-
-//                var width = 2100,
-//                height = 1300;
-                // Goes with charge=-700, linkDistance=350
-
-
-//var color = d3.scale.category10();
 var color = ['#fbb4ae','#b3cde3','#ccebc5','#decbe4'];
-//var color = ['#6A89BA','#6FAF7D','#CB6A72','#9185B7']
-//var color = d3.scale.ordinal()
-//    .domain([0,1,2,3])
-//    .range(colorbrewer.RdBu[4]);
+var color = ['#46C66D','#28C6C6','#7348B3','#FF9F40'];
+// Manu's horrendous colours
 
+var commsNames=['French','ex-Soviet','Iberian','Commonwealth']
 
 var force = d3.layout.force()
-            .alpha(1000) //decay of movement
-            .charge(-200)
-            .friction(0.5)
+            .alpha(0.5) //decay of movement
+            .charge(-100)
+            //.friction(0.8)
             .linkDistance(100)
-            .size([width, height]);
+            .size([width, height*0.9]);
 
+var nudgeInterval=1000;
+// To keep graph moving
 
-setInterval(function(){force.alpha(0.1);},250);
+var highlightInterval=10000;
+// To highligh next randomly selected nodes
+var commsInterval=2000;
+// Delay to colour nodes as communities
+var commsDuration=3500;
+// Time of duration to colour
+
+var networkDelay=25000;
+// Time to wait until movig nodes from map to network
+
+var infoDuration=500;
+// Duration of transition of info box to transparent
+var infoDelay=9000;
+// Delay until transitioning info box to transparent
+
+var highlightDuration=2000
+// Duration of keeping node highlighted after random selection
+
+var clickedHighlightDuration=30000;
+// How long to keep info box opaque after choosing a node to click
+
+var randomRestartDelay=30000
+// Time to wait before restarting random cycling
+
+var restartTimers=[];
+// Stores the function in the queue to restart random highlighting
+
+var nSimilar=10;
+// How any similar countries to list
+
+var slowlyAddText=function(text,elem,delay)
+{
+  console.log('Delay= '+delay);
+
+  if(text.length >0){
+        //append first character
+        elem.append(text[0]);
+        setTimeout(
+            function(){
+                //Slice text by 1 character and call function again
+                slowlyAddText(text.slice(1),elem,delay);
+             },delay
+            );
+          }
+}
+
+//setInterval(function(){force.alpha(0.05);},nudgeInterval);
 // Keep the graph moving
 
 var pushedLabels = Array();
@@ -172,24 +212,24 @@ d3.json("data/network_lat_long.json", function(error, graph) {
   ,'y':height}});
 
     graph.nodes.forEach(function(d){d.x=margin.left+(d.long+180)/360.*(width-margin.left-margin.right);
-      d.y=height-height*(d.lat+90)/180})
+      d.y=height-margin.top*2-height*(d.lat+90)/180})
 
     var colours=graph['nodes'].map(function(d,i){return color[d['type']]});
 
         setTimeout(function(){
-    node.transition().duration(3000).style('fill',function(d,i) { return colours[i]; });
+    node.transition().duration(commsDuration).style('fill',function(d,i) { return colours[i]; });
     // Gradually colour the communities
-},2000);
+},commsInterval);
 
     setTimeout(function(){
     force
     .nodes(graph.nodes)
     .links(graph.links)
     //.friction(0.)
-    .friction(0.5)
+    //.friction(0.)
     .start();
     }
-    ,12000)
+    ,networkDelay)
 
 
     var link = svg.selectAll(".link")
@@ -208,8 +248,8 @@ d3.json("data/network_lat_long.json", function(error, graph) {
                  .attr('n',function(d,i){return i;})
                  .attr('_name',function(d,i){return d.id;})
                  .classed('gnode', true)
-                 .on("mouseover", mouseover)
-                 .on("mouseout", mouseout)
+                 //.on("mouseover", mouseover)
+                 //.on("mouseout", mouseout)
                  .on("click",click)
                  .call(force.drag);
 
@@ -265,8 +305,32 @@ d3.json("data/network_lat_long.json", function(error, graph) {
         });
     });
 
+var populateInfo=function(n,name)
+{
+  var infoText=name+'\n\n'
+  infoText=infoText+'Year: '+graph['nodes'][n]['rawYear']+'\n\n'
+  infoText=infoText+'Community: '+commsNames[graph['nodes'][n]['type']]+'\n\n'
+  infoText=infoText+'Most similar:'+'\n'
 
-});
+  for(k=0;k<nSimilar;k++)
+  {infoText=infoText+'-- '+graph['nodes'][n]['neighbours'][k]+'\n';}
+
+  console.log(graph['nodes'][n])
+
+  $('#info_span').text(infoText);
+  d3.select($('#info_span')[0]).transition().duration(infoDuration)
+  .style("opacity", 1)
+
+//  slowlyAddText(infoText,$('#info_span')[0],0.0001);
+
+  setTimeout(function(){
+    d3.select($('#info_span')[0]).transition().duration(infoDuration)
+  .style("opacity", 0)
+},infoDelay)
+
+}
+
+
 
 function click(){
   var n=this.getAttribute('n');
@@ -282,14 +346,29 @@ console.log('Clicked!');
 while(pushedLabels.length>0)
 // Keep getting rid of all labels
 {
-var j=pushedLabels.shift()
-console.log('Clearing '+j);
-console.log('Length now '+pushedLabels.length)
-mouseClearN(j);}
+  var j=pushedLabels.shift()
+  console.log('Clearing '+j);
+  console.log('Length now '+pushedLabels.length)
+  mouseClearN(j);
+}
 
 //console.log($(".gnode[n='"+n+"']")[0]))
 
 cycle=false;
+
+mouseoverN(n,name)
+populateInfo(n,name)
+//pushedLabels.push(n)
+setTimeout(mouseoutN(n,name),clickedHighlightDuration);
+
+var restartInterval=setTimeout(function(){
+  cycle=true;
+  console.log('Restarting random cycling....')}
+  ,randomRestartDelay);
+// Restart random cycling after 30s
+
+restartTimers.push(restartInterval);
+console.log('Added to interval queue '+restartTimers.length);
 }
 
 function mouseover() {
@@ -308,11 +387,14 @@ function mouseoverN(n,name,callback)
   .duration(1350)
   .style("font-size", 30)
 
+  console.log('Growing '+n)
+
     d3.select($(".gnode[n='"+n+"']")[0]).select("circle").transition()
-    .duration(1350)
+    .duration(1050)
     .attr("r", 30)
 
-    callback(n,name);
+    if(callback)
+    {console.log("Calling back");callback(n,name);}
     // call mouseout
 }
 
@@ -344,15 +426,18 @@ function mouseoutN(n,name)
   console.log('Mouse Out')
 
   d3.select(chosen).transition()
-  .delay(1350)
+  .delay(950)
   .duration(1350)
   .style("font-size", 12)
 
-    d3.select($(".gnode[n='"+n+"']")[0]).select("circle").transition()
-    .delay(1350)
-    .duration(1350)
-    .attr("r", function(d) {return 6;});
+  console.log("Shrinking "+n);
 
+    d3.select($(".gnode[n='"+n+"']")[0]).select("circle").transition()
+    .delay(950)
+    .duration(1350)
+    .attr("r",6);
+
+  console.log("Shrunk ");
 
 }
 
@@ -365,17 +450,26 @@ for(j=0;j<10;j++)
   pushedLabels.push(i);
 
   mouseoverN(i,name,mouseoutN);
-
   }
 })
+var pushInterval;
 
 window.setInterval(
   function(){
+    var i;
+
     if(cycle)
     {
-    var i = Math.floor(Math.random()*194);
+    //while(!(pushedLabels.indexOf(i)==-1))
+    // Don't select same one twice
+    i = Math.floor(Math.random()*194);
+
     var name=$(".gnode[n='"+i+"']")[0].getAttribute('_name');
     pushedLabels.push(i);
+
+    pushInterval=3000;
+    if(pushedLabels.length==10)
+    {pushInterval=3000;}
 
     if(pushedLabels.length>20)
     {console.log('Length 10');
@@ -385,6 +479,9 @@ window.setInterval(
     // Pop old labels
 
     mouseoverN(i,name,mouseoutN);
+    populateInfo(i,name);
 }
-  }, 3000);
+  }, highlightInterval);
+
+  });
 </script>
