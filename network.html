@@ -1,38 +1,38 @@
-                         <style>
+<style>
 
 .node {
-stroke:
-    none;
-    stroke-width: 1px;
-fill:
-#00aeef;
+  stroke:
+  none;
+  stroke-width: 1px;
+  fill:
+  #00aeef;
 }
 
 .link {
-stroke:
-#5d6263;
-stroke-opacity:
-    .06;
+  stroke:
+  #5d6263;
+  stroke-opacity:
+  .06;
 }
 
 .label {
-fill:
-#3f403e;
-align: center;
-font-family: "Sans Serif";
-cursor:
-    default;
-stroke:
+  fill:
+  #3f403e;
+  align: center;
+  font-family: "Sans Serif";
+  cursor:
+  default;
+  stroke:
 
-#3f403e;
-    stroke-width: 0.5;
-    font-weight: 300;
-    font-size:1.5em;
-text-anchor:
-    below;
-alignment-baseline:
-    middle;
-    stroke:#3f403e;
+  #3f403e;
+  stroke-width: 0.5;
+  font-weight: 300;
+  font-size:1.5em;
+  text-anchor:
+  below;
+  alignment-baseline:
+  middle;
+  stroke:#3f403e;
 }
 
 </style>
@@ -40,19 +40,19 @@ alignment-baseline:
   <!-- Bootstrap core CSS -->
   <link href="src/bootstrap.min.css" rel="stylesheet">
   <link rel="icon"
-        type="image/png"
-        href="favicon.ico">
-        <script src='https://code.jquery.com/jquery-2.1.4.js'></script>
+  type="image/png"
+  href="favicon.ico">
+  <script src='https://code.jquery.com/jquery-2.1.4.js'></script>
 
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
-<script src="lib/jquery.waypoints.js"></script>
-<title>Constitutionology - Network</title>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
+  <script src="lib/jquery.waypoints.js"></script>
+  <title>Constitutionology - Network</title>
 </head>
 
 <body>
   <script>
   $(function () {
-      $('#example').popover({container:"body",viewport:'body'})
+    $('#example').popover({container:"body",viewport:'body'})
   });
   </script>
 
@@ -75,432 +75,461 @@ alignment-baseline:
             <li><a href="network"><img class="media-object" src="png_32/007-network-border.png"
               onmouseover="this.src='png_64/007-network.png';"
               onmouseout="this.src='png_32/007-network-border.png';"></a></li>
-            <li><a href="map"><img class="media-object" src="png_32/008-global-border.png"
-              onmouseover="this.src='png_64/008-global.png';"
-              onmouseout="this.src='png_32/008-global-border.png';"></span></a></li>
-            <li ><a href="timeline"><img class="media-object" src="png_32/005-graphic-1-border.png"
-              onmouseover="this.src='png_64/005-graphic-1.png';"
-              onmouseout="this.src='png_32/005-graphic-1-border.png';"></span></a></li>
-            <li><a href="provisions"><img class="media-object" src="png_32/006-graphic-border.png"
-              onmouseover="this.src='png_64/006-graphic.png';"
-              onmouseout="this.src='png_32/006-graphic-border.png';"
-              ></a></li>
-            <li><a href="tree"><img class="media-object" src="png_32/004-nature-border.png"
-              onmouseover="this.src='png_64/004-nature.png';"
-              onmouseout="this.src='png_32/004-nature-border.png';"></span></a></li>
-            <li><a href="hierarchy"><img class="media-object" src="png_32/003-business-border.png"
-              onmouseover="this.src='png_64/003-business.png';"
-              onmouseout="this.src='png_32/003-business-border.png';"
-              ></a></li>
-            <li><a href="faq"><img class="media-object" src="png_32/002-mark-border.png"
-              onmouseover="this.src='png_64/002-mark.png';"
-              onmouseout="this.src='png_32/002-mark-border.png';"
-              ></a></li>
-            <li><a href="about"><img class="media-object" src="png_32/001-about-us-border.png"
-              onmouseover="this.src='png_64/001-about-us.png';"
-              onmouseout="this.src='png_32/001-about-us-border.png';"
-               ></a></li>
-          </ul>
-        </div><!--/.nav-collapse -->
-      </div><!--/.container-fluid -->
-    </nav>
-
-    <div class="well">
-      <div class="media">
-    <h4>This is a network in which nodes are countries which are connected if the texts of their constitutions are similar. The network forms 4 distinct
-      clusters of countries corresponding to the Commonwealth, former Soviet Union, Iberian
-      and Francophone countries.
-    </h4>
-  </div>
-</div>
-</div>
-
-<div id="info_span" style="position: absolute; top:250px; left:80; width:120;
-color:006699;font-size:12px;background-color: rgba(255,255,255,0.7);
-opacity:0;white-space: pre;font-family: "Sans Serif";"></div>
-
-<script src="https://d3js.org/d3.v3.min.js"></script>
-            <script>
-
-            var margin = {top: 20, right: 80, bottom: 60, left: 60}
-
-            var w = window,
-                    d = document,
-                    e = d.documentElement,
-                    g = d.getElementsByTagName('body')[0],
-                    width = w.innerWidth || e.clientWidth || g.clientWidth,
-                    height = w.innerHeight|| e.clientHeight|| g.clientHeight;
-
-                    width = width - margin.left - margin.right,
-                    height = height - margin.top - margin.bottom;
-
-var color = ['#fbb4ae','#b3cde3','#ccebc5','#decbe4'];
-//var color = ['#46C66D','#28C6C6','#7348B3','#FF9F40'];
-// Manu's horrendous colours
-
-var commsNames=['French','ex-Soviet','Iberian','Commonwealth']
-
-var force = d3.layout.force()
-            .alpha(0.5) //decay of movement
-            .charge(-100)
-            //.friction(0.8)
-            .linkDistance(100)
-            .size([width, height*0.9]);
-
-var nudgeInterval=1000;
-// To keep graph moving
-
-var highlightInterval=10000;
-// To highligh next randomly selected nodes
-var commsInterval=2000;
-// Delay to colour nodes as communities
-var commsDuration=3500;
-// Time of duration to colour
-
-var networkDelay=25000;
-// Time to wait until movig nodes from map to network
-
-var infoDuration=500;
-// Duration of transition of info box to transparent
-var infoDelay=9000;
-// Delay until transitioning info box to transparent
-
-var highlightDuration=2000
-// Duration of keeping node highlighted after random selection
-
-var clickedHighlightDuration=30000;
-// How long to keep info box opaque after choosing a node to click
-
-var randomRestartDelay=30000
-// Time to wait before restarting random cycling
-
-var restartTimers=[];
-// Stores the function in the queue to restart random highlighting
-
-var nSimilar=10;
-// How any similar countries to list
-
-var slowlyAddText=function(text,elem,delay)
-{
-  console.log('Delay= '+delay);
-
-  if(text.length >0){
-        //append first character
-        elem.append(text[0]);
-        setTimeout(
-            function(){
-                //Slice text by 1 character and call function again
-                slowlyAddText(text.slice(1),elem,delay);
-             },delay
-            );
-          }
-}
-
-//setInterval(function(){force.alpha(0.05);},nudgeInterval);
-// Keep the graph moving
-
-
-var pushedLabels = Array();
-var cycle=true;
-// Stop cycling after click
-
-var svg = d3.select("body").append("svg")
-          .attr("width", width)
-          .attr("height", height-margin.top-margin.bottom-100)
-          .attr("left", 0)
-          .attr("id",'scroll-container');
-
-d3.selection.prototype.moveToFront = function() {
-            return this.each(function(){
-              this.parentNode.appendChild(this);
-            });
-          };
-
-d3.json("data/network_lat_long.json", function(error, graph) {
-  var dataNodes=graph['nodes'].map(function(d){return {'x':width
-  ,'y':height}});
-
-    graph.nodes.forEach(function(d){d.x=margin.left+(d.long+180.0)/360.*(width-margin.left-margin.right);
-      d.y=height-margin.top*2-height*(d.lat+90)/180})
-
-    var colours=graph['nodes'].map(function(d,i){return color[d['type']]});
-
-        setTimeout(function(){
-    node.transition().duration(commsDuration).style('fill',function(d,i) { return colours[i]; });
-    // Gradually colour the communities
-},commsInterval);
-
-    setTimeout(function(){
-    force
-    .nodes(graph.nodes)
-    .links(graph.links)
-    //.friction(0.)
-    //.friction(0.)
-    .start();
-    }
-    ,networkDelay)
-
-
-    var link = svg.selectAll(".link")
-               .data(graph.links)
-               .enter().append("line")
-               .attr("class", "link")
-    .style("stroke-width", function(d) {
-        return 2*d.weight;
-    });
-
-    // Create the groups under svg
-    var gnodes = svg.selectAll('g.gnode')
-                 .data(graph.nodes)
-                 .enter()
-                 .append('g')
-                 .attr('n',function(d,i){return i;})
-                 .attr('_name',function(d,i){return d.id;})
-                 .classed('gnode', true)
-                 //.on("mouseover", mouseover)
-                 //.on("mouseout", mouseout)
-                 .on("click",click)
-                 .call(force.drag);
-
-    var node = gnodes.append("circle")
-               .attr("class", "node")
-               .attr("r", function(d) {return 0.5+Math.log(d['area'])/1.5;}) //6
-               .attr("n", 1)
-               .style("fill", 'lightgrey')
-               ;
-
-    // Append the labels to each group
-    var labels = gnodes.append("text")
-    .attr("text-anchor", "middle")
-    .text(function(d) {
-        if(d.degree<0.0){return d.id}
-        else
-        {return ''};
-    })
-    .attr("class", "label")
-    .attr('n',function(d,i){return i})
-    .attr("_name",function(d,i){return d.id})
-    .style("fill", function(d) { return 'grey'; })
-    .style("stroke-width",0.0)
-    .style("stroke","grey")
-    .style("z-index",999);
-
-    // node.append("title")
-    // .text(function(d) { return d.id; });
-
-    force.on("tick", function() {
-        link.attr("x1", function(d) {
-            return d.source.x;
-        })
-        .attr("y1", function(d) {
-            return d.source.y;
-        })
-        .attr("x2", function(d) {
-            return d.target.x;
-        })
-        .attr("y2", function(d) {
-            return d.target.y;
-        });
-
-        // Translate the groups
-        gnodes.attr("transform", function(d) {
-            return 'translate(' + [d.x, d.y] + ')';
-        });
-
-        gnodes.attr("cx", function(d) {
-            return d.x;
-        })
-        .attr("cy", function(d) {
-            return d.y;
-        });
-    });
-
-var populateInfo=function(n,name)
-{
-  var infoText=name+'\n\n'
-  infoText=infoText+'Year: '+graph['nodes'][n]['rawYear']+'\n\n'
-  infoText=infoText+'Community: '+commsNames[graph['nodes'][n]['type']]+'\n\n'
-  infoText=infoText+'Most similar:'+'\n'
-
-  for(k=0;k<nSimilar;k++)
-  {infoText=infoText+'-- '+graph['nodes'][n]['neighbours'][k]+'\n';}
-
-  console.log(graph['nodes'][n])
-
-  $('#info_span').text(infoText);
-  d3.select($('#info_span')[0]).transition().duration(infoDuration)
-  .style("opacity", 1)
-
-//  slowlyAddText(infoText,$('#info_span')[0],0.0001);
-
-  setTimeout(function(){
-    d3.select($('#info_span')[0]).transition().duration(infoDuration)
-  .style("opacity", 0)
-},infoDelay)
-
-}
-
-
-
-function click(){
-  var n=this.getAttribute('n');
-  var name=this.getAttribute('_name')
-
-  clickN(n,name);
-}
-
-function clickN(n,name)
-{
-console.log('Clicked!');
-
-while(pushedLabels.length>0)
-// Keep getting rid of all labels
-{
-  var j=pushedLabels.shift()
-  console.log('Clearing '+j);
-  console.log('Length now '+pushedLabels.length)
-  mouseClearN(j);
-}
-
-//console.log($(".gnode[n='"+n+"']")[0]))
-
-cycle=false;
-
-mouseoverN(n,name)
-populateInfo(n,name)
-//pushedLabels.push(n)
-setTimeout(mouseoutN(n,name),clickedHighlightDuration);
-
-var restartInterval=setTimeout(function(){
-  cycle=true;
-  console.log('Restarting random cycling....')}
-  ,randomRestartDelay);
-// Restart random cycling after 30s
-
-restartTimers.push(restartInterval);
-console.log('Added to interval queue '+restartTimers.length);
-}
-
-function mouseover() {
-
-  var n=this.getAttribute('n');
-  var name=this.getAttribute('_name')
-
-  mouseoverN(n,name);
-}
-
-function mouseoverN(n,name,callback)
-{
-  chosen=$("text[n='"+n+"']")[0];
-
-  d3.select(chosen).moveToFront();
-
-  chosen.textContent=name;
-  d3.select(chosen).transition()
-  .duration(1350)
-  .style("font-size", 30)
-
-  console.log('Growing '+n)
-
-    d3.select($(".gnode[n='"+n+"']")[0]).select("circle").transition()
-    .duration(1050)
-    .attr("r", 30)
-
-    if(callback)
-    {console.log("Calling back");callback(n,name);}
-    // call mouseout
-}
-
-function mouseout() {
-  var n=this.getAttribute('n');
-  var name=this.getAttribute('_name');
-
-
-  mouseoutN(n,name);
-}
-
-function mouseClearN(n)
-{
-  toClear=$("text[n='"+n+"']")[0];
-
-  d3.select(toClear).transition()
-  .duration(2000)
-  .style("font-size", 0)
-  .each("end",function(){toClear.textContent='';})
-
-}
-
-function mouseoutN(n,name)
-{
-  chosen=$("text[n='"+n+"']")[0];
-
-  chosen.textContent=name;
-
-  console.log('Mouse Out')
-
-  d3.select(chosen).transition()
-  .delay(950)
-  .duration(1350)
-  .style("font-size", 12)
-
-  console.log("Shrinking "+n);
-
-    d3.select($(".gnode[n='"+n+"']")[0]).select("circle").transition()
-    .delay(950)
-    .duration(1350)
-    .attr("r",6);
-
-  console.log("Shrunk ");
-
-}
-
-$(document).ready(function() {
-setTimeout(function(){
-for(j=0;j<10;j++)
-{var i = Math.floor(Math.random()*194);
-  console.log('i: '+i);
-
-  var name=$(".gnode[n='"+i+"']")[0].getAttribute('_name');
-  pushedLabels.push(i);
-
-  mouseoverN(i,name,mouseoutN);
-  }
-},2000)})
-var pushInterval;
-
-window.setInterval(
-  function(){
-    var i;
-
-    if(cycle)
-    {
-    //while(!(pushedLabels.indexOf(i)==-1))
-    // Don't select same one twice
-    i = Math.floor(Math.random()*194);
-
-    var name=$(".gnode[n='"+i+"']")[0].getAttribute('_name');
-    pushedLabels.push(i);
-
-    pushInterval=3000;
-    if(pushedLabels.length==10)
-    {pushInterval=3000;}
-
-    if(pushedLabels.length>20)
-    {console.log('Length 10');
-    var j=pushedLabels.shift()
-    console.log('Clearing '+j);
-    mouseClearN(j);}
-    // Pop old labels
-
-    mouseoverN(i,name,mouseoutN);
-    populateInfo(i,name);
-}
-  }, highlightInterval);
-
-
-    }
-  )
-
-
-
-</script>
+              <li><a href="map"><img class="media-object" src="png_32/008-global-border.png"
+                onmouseover="this.src='png_64/008-global.png';"
+                onmouseout="this.src='png_32/008-global-border.png';"></span></a></li>
+                <li ><a href="timeline"><img class="media-object" src="png_32/005-graphic-1-border.png"
+                  onmouseover="this.src='png_64/005-graphic-1.png';"
+                  onmouseout="this.src='png_32/005-graphic-1-border.png';"></span></a></li>
+                  <li><a href="provisions"><img class="media-object" src="png_32/006-graphic-border.png"
+                    onmouseover="this.src='png_64/006-graphic.png';"
+                    onmouseout="this.src='png_32/006-graphic-border.png';"
+                    ></a></li>
+                    <li><a href="tree"><img class="media-object" src="png_32/004-nature-border.png"
+                      onmouseover="this.src='png_64/004-nature.png';"
+                      onmouseout="this.src='png_32/004-nature-border.png';"></span></a></li>
+                      <li><a href="hierarchy"><img class="media-object" src="png_32/003-business-border.png"
+                        onmouseover="this.src='png_64/003-business.png';"
+                        onmouseout="this.src='png_32/003-business-border.png';"
+                        ></a></li>
+                        <li><a href="faq"><img class="media-object" src="png_32/002-mark-border.png"
+                          onmouseover="this.src='png_64/002-mark.png';"
+                          onmouseout="this.src='png_32/002-mark-border.png';"
+                          ></a></li>
+                          <li><a href="about"><img class="media-object" src="png_32/001-about-us-border.png"
+                            onmouseover="this.src='png_64/001-about-us.png';"
+                            onmouseout="this.src='png_32/001-about-us-border.png';"
+                            ></a></li>
+                          </ul>
+                        </div><!--/.nav-collapse -->
+                      </div><!--/.container-fluid -->
+                    </nav>
+
+                    <div class="well">
+                      <div class="media">
+                        <h4>This is a network in which nodes are countries which are connected if the texts of their constitutions are similar. The network forms 4 distinct
+                          clusters of countries corresponding to the Commonwealth, former Soviet Union, Iberian
+                          and Francophone countries.
+                        </h4>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div id="info_span" style="position: absolute; top:250px; left:80; width:120;
+                  color:006699;font-size:12px;background-color: rgba(255,255,255,0.7);
+                  opacity:0;white-space: pre;font-family: "Sans Serif";"></div>
+
+                  <script src="https://d3js.org/d3.v3.min.js"></script>
+                  <script>
+
+                  var margin = {top: 20, right: 80, bottom: 60, left: 60}
+
+                  var w = window,
+                  d = document,
+                  e = d.documentElement,
+                  g = d.getElementsByTagName('body')[0],
+                  width = w.innerWidth || e.clientWidth || g.clientWidth,
+                  height = w.innerHeight|| e.clientHeight|| g.clientHeight;
+
+                  width = width - margin.left - margin.right,
+                  height = height - margin.top - margin.bottom;
+
+                  var color = ['#fbb4ae','#b3cde3','#ccebc5','#decbe4'];
+                  //var color = ['#46C66D','#28C6C6','#7348B3','#FF9F40'];
+                  // Manu's horrendous colours
+
+                  var commsNames=['French','ex-Soviet','Iberian','Commonwealth']
+
+                  var force = d3.layout.force()
+                  .alpha(0.5) //decay of movement
+                  .charge(-100)
+                  //.friction(0.8)
+                  .linkDistance(100)
+                  .size([width, height*0.9]);
+
+                  var nudgeInterval=1000;
+                  // To keep graph moving
+
+                  var highlightInterval=10000;
+                  // To highligh next randomly selected nodes
+                  var commsInterval=4000;
+                  // Delay to colour nodes as communities
+                  var commsDuration=3500;
+                  // Time of duration to colour
+
+                  var networkDelay=25000;
+                  // Time to wait until movig nodes from map to network
+
+                  var infoDuration=500;
+                  // Duration of transition of info box to transparent
+                  var infoDelay=9000;
+                  // Delay until transitioning info box to transparent
+
+                  var highlightDuration=2000
+                  // Duration of keeping node highlighted after random selection
+
+                  var clickedHighlightDuration=30000;
+                  // How long to keep info box opaque after choosing a node to click
+
+                  var randomRestartDelay=30000
+                  // Time to wait before restarting random cycling
+
+                  var restartTimers=[];
+                  // Stores the function in the queue to restart random highlighting
+
+                  var nSimilar=10;
+                  // How any similar countries to list
+
+                  var resizeDuration=2000;
+                  var resizeInterval=networkDelay-2000;
+                  // Delay and duration to resize nodes uniformly
+
+                  var slowlyAddText=function(text,elem,delay)
+                  {
+                    console.log('Delay= '+delay);
+
+                    if(text.length >0){
+                      //append first character
+                      elem.append(text[0]);
+                      setTimeout(
+                        function(){
+                          //Slice text by 1 character and call function again
+                          slowlyAddText(text.slice(1),elem,delay);
+                        },delay
+                      );
+                    }
+                  }
+
+                  //setInterval(function(){force.alpha(0.05);},nudgeInterval);
+                  // Keep the graph moving
+
+
+                  var pushedLabels = Array();
+                  var cycle=true;
+                  // Stop cycling after click
+
+                  var svg = d3.select("body").append("svg")
+                  .attr("width", width)
+                  .attr("height", height-margin.top-margin.bottom-100)
+                  .attr("left", 0)
+                  .attr("id",'scroll-container');
+
+                  d3.selection.prototype.moveToFront = function() {
+                    return this.each(function(){
+                      this.parentNode.appendChild(this);
+                    });
+                  };
+
+                  d3.json("data/network_lat_long.json", function(error, graph) {
+                    var dataNodes=graph['nodes'].map(function(d){return {'x':width
+                    ,'y':height}});
+
+                    graph.nodes.forEach(function(d){d.x=margin.left+(d.long+180.0)/360.*(width-margin.left-margin.right);
+                      d.y=height-margin.top*2-height*(d.lat+90)/180})
+
+                      var colours=graph['nodes'].map(function(d,i){return color[d['type']]});
+
+                      setTimeout(function(){
+                        node.transition().duration(commsDuration).style('fill',function(d,i) { return colours[i]; });
+                        // Gradually colour the communities
+                      },commsInterval);
+
+                      setTimeout(function(){
+                        node.transition().duration(resizeDuration).style('r',function(d,i) { return 6; });
+                        // Resize nodes uniformly
+                      },resizeInterval);
+
+                      setTimeout(function(){
+                        force
+                        .nodes(graph.nodes)
+                        .links(graph.links)
+                        //.friction(0.)
+                        //.friction(0.)
+                        .start();
+                      }
+                      ,networkDelay)
+
+
+                      var link = svg.selectAll(".link")
+                      .data(graph.links)
+                      .enter().append("line")
+                      .attr("class", "link")
+                      .style("stroke-width", function(d) {
+                        return 2*d.weight;
+                      });
+
+                      // Create the groups under svg
+                      var gnodes = svg.selectAll('g.gnode')
+                      .data(graph.nodes)
+                      .enter()
+                      .append('g')
+                      .attr('n',function(d,i){return i;})
+                      .attr('_name',function(d,i){return d.id;})
+                      .classed('gnode', true)
+                      //.on("mouseover", mouseover)
+                      //.on("mouseout", mouseout)
+                      .on("click",click)
+                      .call(force.drag);
+
+                      var node = gnodes.append("circle")
+                      .attr("class", "node")
+                      .attr("r", function(d) {return 0.0+Math.log(d['area'])/1.8;}) //6
+                      .attr("n", 1)
+                      .style("fill", 'lightgrey')
+                      ;
+
+                      // Append the labels to each group
+                      var labels = gnodes.append("text")
+                      .attr("text-anchor", "middle")
+                      .text(function(d) {
+                        if(d.degree<0.0){return d.id}
+                        else
+                        {return ''};
+                      })
+                      .attr("class", "label")
+                      .attr('n',function(d,i){return i})
+                      .attr("_name",function(d,i){return d.id})
+                      .style("fill", function(d) { return 'grey'; })
+                      .style("stroke-width",0.0)
+                      .style("stroke","grey")
+                      .style("z-index",999);
+
+                      // node.append("title")
+                      // .text(function(d) { return d.id; });
+
+                      force.on("tick", function() {
+                        link.attr("x1", function(d) {
+                          return d.source.x;
+                        })
+                        .attr("y1", function(d) {
+                          return d.source.y;
+                        })
+                        .attr("x2", function(d) {
+                          return d.target.x;
+                        })
+                        .attr("y2", function(d) {
+                          return d.target.y;
+                        });
+
+                        // Translate the groups
+                        gnodes.attr("transform", function(d) {
+                          return 'translate(' + [d.x, d.y] + ')';
+                        });
+
+                        gnodes.attr("cx", function(d) {
+                          return d.x;
+                        })
+                        .attr("cy", function(d) {
+                          return d.y;
+                        });
+                      });
+
+                      var populateInfo=function(n,name)
+                      {
+                        var infoText=name+'\n\n'
+                        infoText=infoText+'Year: '+graph['nodes'][n]['rawYear']+'\n\n'
+                        infoText=infoText+'Community: '+commsNames[graph['nodes'][n]['type']]+'\n\n'
+                        infoText=infoText+'Most similar:'+'\n'
+
+                        for(k=0;k<nSimilar;k++)
+                        {infoText=infoText+'-- '+graph['nodes'][n]['neighbours'][k]+'\n';}
+
+                        console.log(graph['nodes'][n])
+
+                        $('#info_span').text(infoText);
+                        d3.select($('#info_span')[0]).transition().duration(infoDuration)
+                        .style("opacity", 1)
+
+                        //  slowlyAddText(infoText,$('#info_span')[0],0.0001);
+
+                        setTimeout(function(){
+                          d3.select($('#info_span')[0]).transition().duration(infoDuration)
+                          .style("opacity", 0)
+                        },infoDelay)
+
+                      }
+
+
+
+                      function click(){
+                        var n=this.getAttribute('n');
+                        var name=this.getAttribute('_name')
+
+                        clickN(n,name);
+                      }
+
+                      function clickN(n,name)
+                      {
+                        console.log('Clicked!');
+
+                        while(pushedLabels.length>0)
+                        // Keep getting rid of all labels
+                        {
+                          var j=pushedLabels.shift()
+                          console.log('Clearing '+j);
+                          console.log('Length now '+pushedLabels.length)
+                          mouseClearN(j);
+                        }
+
+                        //console.log($(".gnode[n='"+n+"']")[0]))
+
+                        cycle=false;
+
+                        mouseoverN(n,name)
+                        populateInfo(n,name)
+                        //pushedLabels.push(n)
+                        setTimeout(mouseoutN(n,name),clickedHighlightDuration);
+
+                        var restartInterval=setTimeout(function(){
+                          cycle=true;
+                          console.log('Restarting random cycling....')}
+                          ,randomRestartDelay);
+                          // Restart random cycling after 30s
+
+                          restartTimers.push(restartInterval);
+                          console.log('Added to interval queue '+restartTimers.length);
+                        }
+
+                        function mouseover() {
+
+                          var n=this.getAttribute('n');
+                          var name=this.getAttribute('_name')
+
+                          mouseoverN(n,name);
+                        }
+
+                        function mouseoverN(n,name,callback)
+                        {
+                          chosen=$("text[n='"+n+"']")[0];
+
+                          d3.select(chosen).moveToFront();
+
+                          chosen.textContent=name;
+                          d3.select(chosen).transition()
+                          .duration(1350)
+                          .style("font-size", 30)
+
+                          console.log('Growing '+n)
+
+                          d3.select($(".gnode[n='"+n+"']")[0]).select("circle").transition()
+                          .duration(1050)
+                          .attr("r", 30)
+
+                          if(callback)
+                          {console.log("Calling back");callback(n,name);}
+                          // call mouseout
+                        }
+
+                        function mouseout() {
+                          var n=this.getAttribute('n');
+                          var name=this.getAttribute('_name');
+
+
+                          mouseoutN(n,name);
+                        }
+
+                        function mouseClearN(n)
+                        {
+                          toClear=$("text[n='"+n+"']")[0];
+
+                          d3.select(toClear).transition()
+                          .duration(2000)
+                          .style("font-size", 0)
+                          .each("end",function(){toClear.textContent='';})
+
+                        }
+
+                        function mouseoutN(n,name)
+                        {
+                          chosen=$("text[n='"+n+"']")[0];
+
+                          chosen.textContent=name;
+
+                          console.log('Mouse Out')
+
+                          d3.select(chosen).transition()
+                          .delay(950)
+                          .duration(1350)
+                          .style("font-size", 12)
+
+                          console.log("Shrinking "+n);
+
+                          d3.select($(".gnode[n='"+n+"']")[0]).select("circle").transition()
+                          .delay(950)
+                          .duration(1350)
+                          .attr("r",6);
+
+                          console.log("Shrunk ");
+
+                        }
+
+                        $(document).ready(function() {
+                          setTimeout(function(){
+                            for(j=0;j<10;j++)
+                            {var i = Math.floor(Math.random()*194);
+                              console.log('i: '+i);
+
+                              var name=$(".gnode[n='"+i+"']")[0].getAttribute('_name');
+                              pushedLabels.push(i);
+
+                              mouseoverN(i,name,mouseoutN);
+                            }
+                          },2000)})
+
+                          setTimeout(function(){
+                            // Move nodes back to map
+
+                            console.log('Move back')
+
+                            force
+                            .nodes(graph.nodes)
+                            .links(graph.links)
+                            //.friction(0.)
+                            //.friction(0.)
+                            .stop();
+
+
+                            graph.nodes.forEach(function(d){d.x=margin.left+(d.long+180.0)/360.*(width-margin.left-margin.right);
+                              d.y=height-margin.top*2-height*(d.lat+90)/180})
+
+                            }
+                            ,999999999999)
+
+                            var pushInterval;
+
+                            window.setInterval(
+                              function(){
+                                var i;
+
+                                if(cycle)
+                                {
+                                  //while(!(pushedLabels.indexOf(i)==-1))
+                                  // Don't select same one twice
+                                  i = Math.floor(Math.random()*194);
+
+                                  var name=$(".gnode[n='"+i+"']")[0].getAttribute('_name');
+                                  pushedLabels.push(i);
+
+                                  pushInterval=3000;
+                                  if(pushedLabels.length==10)
+                                  {pushInterval=3000;}
+
+                                  if(pushedLabels.length>20)
+                                  {console.log('Length 10');
+                                  var j=pushedLabels.shift()
+                                  console.log('Clearing '+j);
+                                  mouseClearN(j);}
+                                  // Pop old labels
+
+                                  mouseoverN(i,name,mouseoutN);
+                                  populateInfo(i,name);
+                                }
+                              }, highlightInterval);
+
+
+                            }
+                          )
+
+
+
+                          </script>
