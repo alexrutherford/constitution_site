@@ -45,6 +45,7 @@ alignment-baseline:
         <script src='https://code.jquery.com/jquery-2.1.4.js'></script>
 
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
+<script src="lib/jquery.waypoints.js"></script>
 <title>Constitutionology - Network</title>
 </head>
 
@@ -198,14 +199,16 @@ var slowlyAddText=function(text,elem,delay)
 //setInterval(function(){force.alpha(0.05);},nudgeInterval);
 // Keep the graph moving
 
+
 var pushedLabels = Array();
 var cycle=true;
 // Stop cycling after click
 
 var svg = d3.select("body").append("svg")
           .attr("width", width)
-          .attr("height", height)
-          .attr("left", 0);
+          .attr("height", height-margin.top-margin.bottom-100)
+          .attr("left", 0)
+          .attr("id",'scroll-container');
 
 d3.selection.prototype.moveToFront = function() {
             return this.each(function(){
@@ -261,7 +264,7 @@ d3.json("data/network_lat_long.json", function(error, graph) {
 
     var node = gnodes.append("circle")
                .attr("class", "node")
-               .attr("r", function(d) {return 6;})
+               .attr("r", function(d) {return 0.5+Math.log(d['area'])/1.5;}) //6
                .attr("n", 1)
                .style("fill", 'lightgrey')
                ;
@@ -452,6 +455,7 @@ function mouseoutN(n,name)
 }
 
 $(document).ready(function() {
+setTimeout(function(){
 for(j=0;j<10;j++)
 {var i = Math.floor(Math.random()*194);
   console.log('i: '+i);
@@ -461,7 +465,7 @@ for(j=0;j<10;j++)
 
   mouseoverN(i,name,mouseoutN);
   }
-})
+},2000)})
 var pushInterval;
 
 window.setInterval(
@@ -493,5 +497,10 @@ window.setInterval(
 }
   }, highlightInterval);
 
-  });
+
+    }
+  )
+
+
+
 </script>
